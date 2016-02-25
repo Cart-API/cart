@@ -1,0 +1,52 @@
+/user
+
+{
+    "firstName": "user",
+    "lastName": "user",
+    "username": "user",
+    "email": "user@email.com",
+    "password": "Aw3s0m#01"
+}
+
+/category
+
+{
+    "description":"Category A"
+}
+
+/client
+
+{
+    "name": "client A",
+    "lastName": "client last",
+    "email": "client@email.com"
+}
+
+/order
+
+{
+    "code": "001",
+    "emission": "01/01/2016",
+    "delivery": "01/01/2016",
+    "price": 100,
+    "discount": 10,
+    "client": 1
+}
+
+/product
+
+{
+    "reference": "001",
+    "description": "Product",
+    "unit": 100,
+    "category": 1
+}
+
+/item-order
+
+{
+    "order": 1,
+    "product": 1,
+    "price": 10,
+    "quantity": 20
+}

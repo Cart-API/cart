@@ -1,0 +1,59 @@
+{
+  "name": "cart",
+  "version": "0.0.1",
+  "description": "Cart",
+  "main": "index.js",
+  "scripts": {
+    "test": "scripts/test",
+    "coverage": "scripts/coverage",
+    "start": "scripts/server",
+    "migrate": "scripts/migration"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thebergamo/cart.git"
+  },
+  "keywords": [
+    "ecommerce",
+    "shop",
+    "platform"
+  ],
+  "author": "Marcos Bérgamo <marcos@thedon.com.br>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thebergamo/cart/issues"
+  },
+  "homepage": "https://github.com/thebergamo/cart#readme",
+  "dependencies": {
+    "bcrypt": "~0.8.5",
+    "bluebird": "~3.1.1",
+    "dotenv": "~1.2.0",
+    "good": "~6.4.0",
+    "good-console": "~5.2.0",
+    "good-file": "~5.1.1",
+    "hapi": "~12.1.0",
+    "hapi-auth-jwt2": "~5.3.1",
+    "hapi-boom-decorators": "~1.1.0",
+    "joi": "~7.1.0",
+    "jsonwebtoken": "~5.5.0",
+    "lodash": "~4.0.0",
+    "pg": "~4.4.3",
+    "pg-hstore": "~2.3.2",
+    "pg-native": "~1.10.0",
+    "sequelize": "~3.17.1",
+    "sequelize-cli": "~2.3.1",
+    "umzug": "~1.8.0"
+  },
+  "devDependencies": {
+    "chai": "~3.4.1",
+    "chai-things": "~0.2.0",
+    "coveralls": "^2.11.6",
+    "lab": "~8.0.1",
+    "semistandard": "~7.0.4"
+  },
+  "semistandard": {
+    "ignore": [
+      "/client/"
+    ]
+  }
+}

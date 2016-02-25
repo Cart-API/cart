@@ -1,0 +1,1 @@
+## Contributors to the Bolty project

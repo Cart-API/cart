@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# script/bootstrap: Resolve all dependencies that the application requires to
+#                   run.
+
+set -e
+
+if [ -f "package.json" ]; then
+  echo "==> Installing module dependencies…"
+  npm install
+fi
+
