@@ -44,7 +44,7 @@ module.exports = (sequelize, DataType) => {
         });
         Product.belongsTo(models.Category, {
           foreignKey: 'category'
-        });        
+        });
       }
     },
 
@@ -56,7 +56,7 @@ module.exports = (sequelize, DataType) => {
           }
         };
       }
-    }    
+    }
   });
 
   return Product;

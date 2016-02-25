@@ -47,7 +47,6 @@ function start () {
 
     Server.start((err) => {
       if (err) {
-        console.log(err)
         throw err;
       }
 
@@ -55,7 +54,6 @@ function start () {
     });
   })
   .catch((err) => {
-    console.log(err)
     Server.log('==> App Error', err);
     process.exit();
   });

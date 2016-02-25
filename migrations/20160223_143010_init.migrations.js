@@ -42,7 +42,7 @@ function up (db) {
     createdAt: 'created_at',
     updatedAt: 'update_at',
     tableName: 'users'
-  });  
+  });
 
   const Category = db.sequelize.define('Category', {
     description: {
@@ -57,11 +57,11 @@ function up (db) {
         model: 'users',
         key: 'id'
       }
-    }    
+    }
   }, {
     createdAt: 'created_at',
     updatedAt: 'update_at',
-    tableName: 'categories',
+    tableName: 'categories'
   });
 
   const Product = db.sequelize.define('Product', {
@@ -128,7 +128,7 @@ function up (db) {
   }, {
     createdAt: 'created_at',
     updatedAt: 'update_at',
-    tableName: 'clients',
+    tableName: 'clients'
   });
 
   const Order = db.sequelize.define('Order', {
@@ -171,7 +171,7 @@ function up (db) {
         model: 'users',
         key: 'id'
       }
-    }    
+    }
   }, {
     createdAt: 'created_at',
     updatedAt: 'update_at',
@@ -224,7 +224,6 @@ function up (db) {
 }
 
 function down (db) {
-
   const User = require('../src/shared/user/model')(db.sequelize, db.Sequelize);
   const Client = require('../src/catalog/client/model')(db.sequelize, db.Sequelize);
   const Category = require('../src/catalog/category/model')(db.sequelize, db.Sequelize);
@@ -232,8 +231,7 @@ function down (db) {
   const Order = require('../src/catalog/order/model')(db.sequelize, db.Sequelize);
   const ItemOrder = require('../src/catalog/item-order/model')(db.sequelize, db.Sequelize);
 
-
-  return Promise.all([ItemOrder.drop(),])
+  return Promise.all([ItemOrder.drop()])
   .then(() => {
     return Promise.all([Order.drop(), Product.drop()])
     .then(() => {
@@ -242,6 +240,6 @@ function down (db) {
         Promise.all([User.drop()]);
       });
     });
-  });  
+  });
 }
 

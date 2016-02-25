@@ -25,11 +25,11 @@ function list (request, reply) {
     attributes: ['id', 'description'],
     order: 'description'
   })
-  .then((result) => { 
+  .then((result) => {
     reply({
       data: result.rows,
       count: result.count
-    })
+    });
   }).catch((err) => reply.badImplementation(err.message));
 }
 
@@ -100,7 +100,6 @@ function destroy (request, reply) {
     if (!category) {
       return reply.notFound();
     }
-    return category.destroy().then(() => reply())
+    return category.destroy().then(() => reply());
   }).catch((err) => reply.badImplementation(err.message));
 }
-

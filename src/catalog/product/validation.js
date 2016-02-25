@@ -20,7 +20,7 @@ const schema = {
     .trim(),
   description: Joi
     .string()
-    .default(''),    
+    .default(''),
   unit: Joi
     .number()
     .precision(2)

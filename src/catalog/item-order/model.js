@@ -40,7 +40,7 @@ module.exports = (sequelize, DataType) => {
         });
         ItemOrder.belongsTo(models.Product, {
           foreignKey: 'product'
-        });        
+        });
       }
     },
 

@@ -41,7 +41,7 @@ module.exports = (sequelize, DataType) => {
         model: 'users',
         key: 'id'
       }
-    }    
+    }
   }, {
     createdAt: 'created_at',
     updatedAt: 'update_at',
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataType) => {
         });
         Order.belongsTo(models.Client, {
           foreignKey: 'client'
-        });     
+        });
       }
     },
 

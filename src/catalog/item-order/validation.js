@@ -25,7 +25,7 @@ const schema = {
     .precision(2)
     .positive(),
   quantity: Joi
-    .number()  
+    .number()
     .integer()
 };
 
@@ -84,7 +84,7 @@ function update () {
         .number()
         .integer()
         .positive()
-        .required(),      
+        .required(),
       id: Joi
         .number()
         .integer()
@@ -115,7 +115,7 @@ function destroy () {
         .number()
         .integer()
         .positive()
-        .required(),      
+        .required(),
       id: Joi
         .number()
         .integer()

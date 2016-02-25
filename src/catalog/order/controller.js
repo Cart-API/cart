@@ -25,15 +25,15 @@ function list (request, reply) {
     attributes: ['id', 'code', 'emission', 'delivery', 'price', 'discount'],
     include: [{
       model: this.database.Client,
-      attributes: ['id', 'name'],
+      attributes: ['id', 'name']
     }],
     order: 'code'
   })
-  .then((result) => { 
+  .then((result) => {
     reply({
       data: result.rows,
       count: result.count
-    })
+    });
   }).catch((err) => reply.badImplementation(err.message));
 }
 
@@ -49,7 +49,7 @@ function read (request, reply) {
     attributes: ['id', 'code', 'emission', 'delivery', 'price', 'discount'],
     include: [{
       model: this.database.Client,
-      attributes: ['id', 'name'],
+      attributes: ['id', 'name']
     }],
     where: {id: id}
   })
@@ -108,7 +108,7 @@ function destroy (request, reply) {
     if (!order) {
       return reply.notFound();
     }
-    return order.destroy().then(() => reply())
+    return order.destroy().then(() => reply());
   }).catch((err) => reply.badImplementation(err.message));
 }
 

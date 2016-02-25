@@ -34,11 +34,11 @@ function list (request, reply) {
       attributes: ['id', 'description']
     }]
   })
-  .then((result) => { 
+  .then((result) => {
     reply({
       data: result.rows,
       count: result.count
-    })
+    });
   }).catch((err) => reply.badImplementation(err.message));
 }
 
@@ -120,7 +120,6 @@ function destroy (request, reply) {
     if (!order) {
       return reply.notFound();
     }
-    return order.destroy().then(() => reply())
+    return order.destroy().then(() => reply());
   }).catch((err) => reply.badImplementation(err.message));
 }
-

@@ -14,7 +14,7 @@ module.exports = (sequelize, DataType) => {
         model: 'users',
         key: 'id'
       }
-    }    
+    }
   }, {
     createdAt: 'created_at',
     updatedAt: 'update_at',
@@ -22,8 +22,8 @@ module.exports = (sequelize, DataType) => {
 
     classMethods: {
       associate: (models) => {
-        Category.belongsTo(models.User, { 
-          foreignKey: 'user' 
+        Category.belongsTo(models.User, {
+          foreignKey: 'user'
         });
       }
     },

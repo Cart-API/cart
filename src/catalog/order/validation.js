@@ -19,7 +19,7 @@ const schema = {
   emission: Joi
     .date(),
   delivery: Joi
-    .date(),    
+    .date(),
   price: Joi
     .number()
     .precision(2)
@@ -27,10 +27,10 @@ const schema = {
   discount: Joi
     .number()
     .precision(2)
-    .positive(),    
+    .positive(),
   client: Joi
     .number()
-    .integer()  
+    .integer()
 };
 
 function list () {
@@ -69,7 +69,7 @@ function create () {
         .required(),
       client: schema
         .client
-        .required()        
+        .required()
     }
   };
 }

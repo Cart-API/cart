@@ -25,15 +25,15 @@ function list (request, reply) {
     attributes: ['id', 'reference', 'description', 'unit'],
     include: [{
       model: this.database.Category,
-      attributes: ['id', 'description'],
+      attributes: ['id', 'description']
     }],
     order: 'description'
   })
-  .then((result) => { 
+  .then((result) => {
     reply({
       data: result.rows,
       count: result.count
-    })
+    });
   }).catch((err) => reply.badImplementation(err.message));
 }
 
@@ -49,7 +49,7 @@ function read (request, reply) {
     attributes: ['id', 'reference', 'description', 'unit'],
     include: [{
       model: this.database.Category,
-      attributes: ['id', 'description'],
+      attributes: ['id', 'description']
     }],
     where: {id: id}
   })
@@ -108,7 +108,6 @@ function destroy (request, reply) {
     if (!category) {
       return reply.notFound();
     }
-    return category.destroy().then(() => reply())
+    return category.destroy().then(() => reply());
   }).catch((err) => reply.badImplementation(err.message));
 }
-
