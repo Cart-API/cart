@@ -16,6 +16,7 @@ global. it = lab.it;
 global.describe = lab.describe;
 global.before = lab.before;
 global.beforeEach = lab.beforeEach;
+global.after = lab.after;
 
 // get the server
 global.before((done) => {
