@@ -20,7 +20,17 @@ const schema = {
 };
 
 function list () {
-  return {};
+  return {
+    query: {
+      page: Joi
+        .number()
+        .integer()
+        .optional(),
+      search: Joi
+        .string()
+        .optional()
+    }
+  };
 }
 
 function read () {

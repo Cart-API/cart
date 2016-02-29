@@ -1,5 +1,7 @@
 'use strict';
 
+const Pagination = require('../../utils/pagination');
+
 function CategoryController (db) {
   this.database = db;
   this.model = db.Category;
@@ -10,20 +12,28 @@ CategoryController.prototype = {
   read,
   create,
   update,
-  destroy
+  destroy,
+  search
 };
 
 module.exports = CategoryController;
 
 // [GET] /category
 function list (request, reply) {
+  const pagination = new Pagination();
+
   this.model
   .scope({
     method: ['user', request.auth.credentials.id]
   })
   .findAndCountAll({
     attributes: ['id', 'description'],
-    order: 'description'
+    order: 'description',
+    offset: pagination.getOffset(request),
+    limit: pagination.getLimit(),
+    where: {
+      $and: this.search(request)
+    }
   })
   .then((result) => {
     reply({
@@ -102,4 +112,17 @@ function destroy (request, reply) {
     }
     return category.destroy().then(() => reply());
   }).catch((err) => reply.badImplementation(err.message));
+}
+
+function search (request) {
+  const search = request.query.search;
+  if (search) {
+    const conditions = [{
+      description: {
+        $ilike: '%' + search + '%'
+      }
+    }];
+    return conditions;
+  }
+  return null;
 }
