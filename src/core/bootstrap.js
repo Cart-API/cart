@@ -76,7 +76,7 @@ function filterCoreFiles (fileName) {
 function filterCoreDirectories (dirName) {
   try {
     let stat = fs.statSync(path.join(__dirname, '..', dirName));
-    if (stat.isDirectory() && dirName.match(/^[^.]/) && ['core', 'utils'].indexOf(dirName) === -1) {
+    if (stat.isDirectory() && dirName.match(/^[^.]/) && ['core'].indexOf(dirName) === -1) {
       return true;
     }
 
