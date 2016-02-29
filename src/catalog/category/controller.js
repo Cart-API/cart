@@ -1,7 +1,5 @@
 'use strict';
 
-const Pagination = require('../../utils/pagination');
-
 function CategoryController (db) {
   this.database = db;
   this.model = db.Category;
@@ -20,8 +18,6 @@ module.exports = CategoryController;
 
 // [GET] /category
 function list (request, reply) {
-  const pagination = new Pagination();
-
   this.model
   .scope({
     method: ['user', request.auth.credentials.id]
@@ -29,10 +25,10 @@ function list (request, reply) {
   .findAndCountAll({
     attributes: ['id', 'description'],
     order: 'description',
-    offset: pagination.getOffset(request),
-    limit: pagination.getLimit(),
+    offset: request.offset(),
+    limit: request.limit,
     where: {
-      $and: this.search(request)
+      $and: this.search(request.search())
     }
   })
   .then((result) => {
@@ -114,8 +110,7 @@ function destroy (request, reply) {
   }).catch((err) => reply.badImplementation(err.message));
 }
 
-function search (request) {
-  const search = request.query.search;
+function search (search) {
   if (search) {
     const conditions = [{
       description: {
