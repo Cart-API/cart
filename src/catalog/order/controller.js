@@ -118,11 +118,11 @@ function destroy (request, reply) {
 
 function search (search) {
   if (search) {
-    const conditions = [{
+    const conditions = {
       name: {
         $ilike: '%' + search + '%'
       }
-    }];
+    };
     return conditions;
   }
   return null;

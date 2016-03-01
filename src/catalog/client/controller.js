@@ -28,7 +28,7 @@ function list (request, reply) {
     offset: request.offset(),
     limit: request.limit,
     where: {
-      $and: this.search(request.search())
+      $or: this.search(request.search())
     }
   })
   .then((result) => {
@@ -112,7 +112,7 @@ function destroy (request, reply) {
 
 function search (search) {
   if (search) {
-    const conditions = [{
+    const conditions = {
       name: {
         $ilike: '%' + search + '%'
       },
@@ -122,7 +122,7 @@ function search (search) {
       email: {
         $ilike: '%' + search + '%'
       }
-    }];
+    };
     return conditions;
   }
   return null;
