@@ -10,7 +10,8 @@ ProductController.prototype = {
   read,
   create,
   update,
-  destroy
+  destroy,
+  search
 };
 
 module.exports = ProductController;
@@ -23,11 +24,16 @@ function list (request, reply) {
   })
   .findAndCountAll({
     attributes: ['id', 'reference', 'description', 'unit'],
+    order: 'description',
     include: [{
       model: this.database.Category,
       attributes: ['id', 'description']
     }],
-    order: 'description'
+    offset: request.offset(),
+    limit: request.limit,
+    where: {
+      $or: this.search(request.search())
+    }
   })
   .then((result) => {
     reply({
@@ -110,4 +116,19 @@ function destroy (request, reply) {
     }
     return category.destroy().then(() => reply());
   }).catch((err) => reply.badImplementation(err.message));
+}
+
+function search (search) {
+  if (search) {
+    const conditions = {
+      description: {
+        $ilike: '%' + search + '%'
+      },
+      reference: {
+        $ilike: '%' + search + '%'
+      }
+    };
+    return conditions;
+  }
+  return null;
 }
