@@ -10,7 +10,8 @@ ItemOrderController.prototype = {
   read,
   create,
   update,
-  destroy
+  destroy,
+  search
 };
 
 module.exports = ItemOrderController;
@@ -31,7 +32,10 @@ function list (request, reply) {
     },
     {
       model: this.database.Product,
-      attributes: ['id', 'description']
+      attributes: ['id', 'description'],
+      where: {
+        $and: this.search(request.search())
+      }
     }]
   })
   .then((result) => {
@@ -122,4 +126,16 @@ function destroy (request, reply) {
     }
     return order.destroy().then(() => reply());
   }).catch((err) => reply.badImplementation(err.message));
+}
+
+function search (search) {
+  if (search) {
+    const conditions = [{
+      description: {
+        $ilike: '%' + search + '%'
+      }
+    }];
+    return conditions;
+  }
+  return null;
 }

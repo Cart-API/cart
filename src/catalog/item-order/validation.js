@@ -37,6 +37,15 @@ function list () {
         .integer()
         .positive()
         .required()
+    },
+    query: {
+      page: Joi
+        .number()
+        .integer()
+        .optional(),
+      search: Joi
+        .string()
+        .optional()
     }
   };
 }
