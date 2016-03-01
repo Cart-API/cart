@@ -10,7 +10,8 @@ ClientController.prototype = {
   read,
   create,
   update,
-  destroy
+  destroy,
+  search
 };
 
 module.exports = ClientController;
@@ -23,7 +24,12 @@ function list (request, reply) {
   })
   .findAndCountAll({
     attributes: ['id', 'name', 'lastName', 'email'],
-    order: 'name'
+    order: 'name',
+    offset: request.offset(),
+    limit: request.limit,
+    where: {
+      $and: this.search(request.search())
+    }
   })
   .then((result) => {
     reply({
@@ -102,4 +108,22 @@ function destroy (request, reply) {
     }
     return client.destroy().then(() => reply());
   }).catch((err) => reply.badImplementation(err.message));
+}
+
+function search (search) {
+  if (search) {
+    const conditions = [{
+      name: {
+        $ilike: '%' + search + '%'
+      },
+      lastName: {
+        $ilike: '%' + search + '%'
+      },
+      email: {
+        $ilike: '%' + search + '%'
+      }
+    }];
+    return conditions;
+  }
+  return null;
 }
