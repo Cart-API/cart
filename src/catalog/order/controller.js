@@ -10,7 +10,8 @@ OrderController.prototype = {
   read,
   create,
   update,
-  destroy
+  destroy,
+  search
 };
 
 module.exports = OrderController;
@@ -25,7 +26,10 @@ function list (request, reply) {
     attributes: ['id', 'code', 'emission', 'delivery', 'price', 'discount'],
     include: [{
       model: this.database.Client,
-      attributes: ['id', 'name']
+      attributes: ['id', 'name'],
+      where: {
+        $and: this.search(request.search())
+      }
     }],
     order: 'code'
   })
@@ -112,3 +116,14 @@ function destroy (request, reply) {
   }).catch((err) => reply.badImplementation(err.message));
 }
 
+function search (search) {
+  if (search) {
+    const conditions = [{
+      name: {
+        $ilike: '%' + search + '%'
+      }
+    }];
+    return conditions;
+  }
+  return null;
+}
