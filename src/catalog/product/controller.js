@@ -11,7 +11,8 @@ ProductController.prototype = {
   create,
   update,
   destroy,
-  search
+  search,
+  searchCategory
 };
 
 module.exports = ProductController;
@@ -23,16 +24,16 @@ function list (request, reply) {
     method: ['user', request.auth.credentials.id]
   })
   .findAndCountAll({
-    attributes: ['id', 'reference', 'description', 'unit'],
+    attributes: ['id', 'reference', 'description', 'unit', 'category'],
     order: 'description',
+    offset: request.offset(),
+    limit: request.limit,
     include: [{
       model: this.database.Category,
       attributes: ['id', 'description']
     }],
-    offset: request.offset(),
-    limit: request.limit,
     where: {
-      $or: this.search(request.search())
+      $and: this.search(request.search())
     }
   })
   .then((result) => {
@@ -125,6 +126,18 @@ function search (search) {
         $ilike: '%' + search + '%'
       },
       reference: {
+        $ilike: '%' + search + '%'
+      }
+    };
+    return conditions;
+  }
+  return null;
+}
+
+function searchCategory (search) {
+  if (search) {
+    const conditions = {
+      description: {
         $ilike: '%' + search + '%'
       }
     };
