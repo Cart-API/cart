@@ -1,6 +1,8 @@
 /* global describe, beforeEach, before, it, expect, db, server */
 'use strict';
 
+const Promise = require('bluebird');
+
 describe('Routes /category', () => {
   let userInfo;
 
@@ -30,6 +32,7 @@ describe('Routes /category', () => {
     beforeEach((done) => {
       return db.Category.destroy({where: {}})
       .then(() => {
+        let reqs = [];
         const options = {
           method: 'POST',
           url: '/category',
@@ -42,12 +45,12 @@ describe('Routes /category', () => {
             description: 'Some awesome category here!'
           };
 
-          server.inject(options, (response) => {
-            if (i === 4) {
-              return done();
-            }
-          });
+          reqs.push(server.inject(options));
         }
+        Promise.all(reqs)
+        .then(() => {
+          done();
+        });
       });
     });
 

@@ -2,6 +2,7 @@
 'use strict';
 
 let jwt = require('jsonwebtoken');
+const Promise = require('bluebird');
 const SECRET = process.env.JWT || 'stubJWT';
 
 describe('Routes /user', () => {
@@ -9,6 +10,7 @@ describe('Routes /user', () => {
     beforeEach((done) => {
       return db.User.destroy({where: {}})
       .then(() => {
+        let reqs = [];
         const options = {
           method: 'POST',
           url: '/user',
@@ -24,12 +26,12 @@ describe('Routes /user', () => {
             email: 'user_' + i + '@example.com'
           };
 
-          server.inject(options, (response) => {
-            if (i === 4) {
-              return done();
-            }
-          });
+          reqs.push(server.inject(options));
         }
+        Promise.all(reqs)
+        .then(() => {
+          done();
+        });
       });
     });
 

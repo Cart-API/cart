@@ -1,6 +1,8 @@
 /* global describe, beforeEach, before, it, expect, db, server */
 'use strict';
 
+const Promise = require('bluebird');
+
 describe('Routes /client', () => {
   let userInfo;
 
@@ -30,6 +32,7 @@ describe('Routes /client', () => {
     beforeEach((done) => {
       return db.Client.destroy({where: {}})
       .then(() => {
+        let reqs = [];
         const options = {
           method: 'POST',
           url: '/client',
@@ -44,12 +47,12 @@ describe('Routes /client', () => {
             email: 'email@email.com'
           };
 
-          server.inject(options, (response) => {
-            if (i === 4) {
-              return done();
-            }
-          });
+          reqs.push(server.inject(options));
         }
+        Promise.all(reqs)
+        .then(() => {
+          done();
+        });
       });
     });
 
@@ -317,7 +320,6 @@ describe('Routes /client', () => {
         headers: {'Authorization': 'Bearer ' + userInfo}
       };
       server.inject(options, (response) => {
-        console.log(response.result);
         expect(response).to.have.property('statusCode', 200);
         expect(response).to.have.property('result');
         done();
