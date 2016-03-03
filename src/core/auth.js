@@ -21,7 +21,7 @@ exports.register = (server, options, next) => {
   }
 
   function validate (decoded, request, cb) {
-    const db = options.database;
+    const db = server.database;
     const User = db.User;
     return new Promise((resolve) => {
       User.findById(decoded.id)

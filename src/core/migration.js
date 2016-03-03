@@ -2,17 +2,28 @@
 
 const envPath = process.env.NODE_ENV === 'test' ? __dirname + '/../../test/.env' : __dirname + '/../../.env';
 
-require('dotenv').config({ path: envPath, silent: true });
+require('dotenv').config({ path: envPath });
 
 const Umzug = require('umzug');
+const Sequelize = require('sequelize');
 
-const db = require('./database');
+const config = {
+  username: process.env.DB_USERNAME || 'postgres',
+  password: process.env.DB_PASSWORD || 'postgres',
+  database: process.env.DB_NAME || 'cart',
+  host: process.env.DB_HOST || '127.0.0.1',
+  port: process.env.DB_PORT || 5432,
+  dialect: process.env.DB_DIALECT || 'postgres'
+};
 
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
+
+let db = {sequelize, Sequelize};
 // Instantiate Umzug
 let options = {
   storage: 'sequelize',
   storageOptions: {
-    sequelize: db.sequelize,
+    sequelize: sequelize,
     modelName: 'MigrationSchema',
     tableName: 'migration_table'
   },

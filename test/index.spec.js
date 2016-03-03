@@ -19,11 +19,13 @@ global.beforeEach = lab.beforeEach;
 global.after = lab.after;
 
 // get the server
-global.before((done) => {
-  require('../src/core/bootstrap').start()
-  .then(() => {
-    global.server = require('../src/core/server');
-    global.db = global.server.database;
-    return done();
+global.describe('load the bootstrap', () => {
+  global.before((done) => {
+    require('../src/core/bootstrap').start()
+    .then((server) => {
+      global.server = server;
+      global.db = global.server.database;
+      return done();
+    });
   });
 });
