@@ -5,7 +5,7 @@ const Validator = require('./validation');
 
 exports.register = (server, options, next) => {
   // instantiate controller
-  const controller = new Controller(options.database);
+  const controller = new Controller(server.database);
 
   server.bind(controller);
   server.route([

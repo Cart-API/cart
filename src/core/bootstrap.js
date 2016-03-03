@@ -5,7 +5,6 @@ const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
 const path = require('path');
 
-const db = require('./database');
 const Server = require('./server');
 
 module.exports = {start};
@@ -13,13 +12,15 @@ module.exports = {start};
 function start () {
   return Promise.resolve()
   .then(() => {
+    return registerToServer(require('./database'));
+  })
+  .then(() => {
     // load core plugins
     return fs.readdirAsync(__dirname)
     .filter(filterCoreFiles)
     .map((file) => {
       return {
-        register: require(path.join(__dirname, file)),
-        options: { database: db }
+        register: require(path.join(__dirname, file))
       };
     })
     .then(registerToServer);
@@ -30,19 +31,14 @@ function start () {
       .filter(filterCoreDirectories)
       .map((dir) => {
         return {
-          register: require(path.join(__dirname, '..', dir)),
-          options: { database: db }
+          register: require(path.join(__dirname, '..', dir))
         };
       })
       .then(registerToServer);
   })
   .then(() => {
-    // associate db
-    db.doAssociations(db);
-  })
-  .then(() => {
     if (process.env.NODE_ENV === 'test') {
-      return;
+      return Server;
     }
 
     Server.start((err) => {

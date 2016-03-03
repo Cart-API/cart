@@ -7,12 +7,8 @@ const path = require('path');
 const basePath = __dirname;
 
 exports.register = (server, options, next) => {
-  // register model
-  server.methods.loadModels(_.compact(getFiles('model.js')), () => {
-    // register route
-    server.methods.loadRoutes(_.compact(getFiles('route.js')), () => {
-      next();
-    });
+  server.methods.loadRoutes(_.compact(getFiles('route.js')), () => {
+    next();
   });
 };
 
