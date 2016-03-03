@@ -57,7 +57,7 @@ function read (request, reply) {
     attributes: ['id', 'reference', 'description', 'unit'],
     include: [{
       model: this.database.Category,
-      attributes: ['id', 'description']      
+      attributes: ['id', 'description']
     }],
     where: {id: id}
   })

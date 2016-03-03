@@ -40,7 +40,6 @@ function start () {
     if (process.env.NODE_ENV === 'test') {
       return Server;
     }
-
     Server.start((err) => {
       if (err) {
         throw err;
