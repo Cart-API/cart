@@ -12,7 +12,23 @@ module.exports = {start};
 function start () {
   return Promise.resolve()
   .then(() => {
-    return registerToServer(require('./database'));
+    // load Database
+    return registerToServer({
+      register: require('k7'),
+      options: {
+        models: 'src/**/model.js',
+        adapter: require('k7-sequelize'),
+        connectionOptions: {
+          database: process.env.DB_NAME || 'cart',
+          username: process.env.DB_USERNAME || 'cart',
+          password: process.env.DB_PASSWORD || 'cart',
+          port: process.env.DB_PORT || 5434,
+          options: {
+            dialect: process.env.DB_DIALECT || 'postgres'
+          }
+        }
+      }
+    });
   })
   .then(() => {
     // load core plugins
@@ -93,3 +109,4 @@ function registerToServer (plugins) {
     });
   });
 }
+
