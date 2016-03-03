@@ -24,16 +24,17 @@ function list (request, reply) {
     method: ['user', request.auth.credentials.id]
   })
   .findAndCountAll({
-    attributes: ['id', 'reference', 'description', 'unit', 'category'],
+    attributes: ['id', 'reference', 'description', 'unit'],
     order: 'description',
     offset: request.offset(),
     limit: request.limit,
     include: [{
       model: this.database.Category,
-      attributes: ['id', 'description']
+      attributes: ['id', 'description'],
+      required: true
     }],
     where: {
-      $and: this.search(request.search())
+      $or: this.search(request.search())
     }
   })
   .then((result) => {
@@ -56,7 +57,7 @@ function read (request, reply) {
     attributes: ['id', 'reference', 'description', 'unit'],
     include: [{
       model: this.database.Category,
-      attributes: ['id', 'description']
+      attributes: ['id', 'description']      
     }],
     where: {id: id}
   })
@@ -127,6 +128,9 @@ function search (search) {
       },
       reference: {
         $ilike: '%' + search + '%'
+      },
+      '$Category.description$': {
+        $like: '%' + search + '%'
       }
     };
     return conditions;
