@@ -50,7 +50,7 @@ function create () {
     payload: {
       description: schema
         .description
-        .optional()
+        .required()
     }
   };
 }
@@ -67,7 +67,7 @@ function update () {
     payload: {
       description: schema
         .description
-        .optional()
+        .required()
     }
   };
 }

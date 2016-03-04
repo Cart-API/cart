@@ -17,13 +17,14 @@ const schema = {
   name: Joi
     .string()
     .min(1)
-    .max(100)
+    .max(250)
     .trim(),
   lastName: Joi
     .string()
     .default(''),
   email: Joi
     .string()
+    .max(120)
     .email()
 };
 
