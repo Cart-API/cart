@@ -11,8 +11,7 @@ ProductController.prototype = {
   create,
   update,
   destroy,
-  search,
-  searchCategory
+  search
 };
 
 module.exports = ProductController;
@@ -131,18 +130,6 @@ function search (search) {
       },
       '$Category.description$': {
         $like: '%' + search + '%'
-      }
-    };
-    return conditions;
-  }
-  return null;
-}
-
-function searchCategory (search) {
-  if (search) {
-    const conditions = {
-      description: {
-        $ilike: '%' + search + '%'
       }
     };
     return conditions;

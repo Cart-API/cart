@@ -24,14 +24,15 @@ function list (request, reply) {
   })
   .findAndCountAll({
     attributes: ['id', 'code', 'emission', 'delivery', 'price', 'discount'],
+    order: 'code',
     include: [{
       model: this.database.Client,
       attributes: ['id', 'name'],
-      where: {
-        $and: this.search(request.search())
-      }
+      required: true
     }],
-    order: 'code'
+    where: {
+      $or: this.search(request.search())
+    }
   })
   .then((result) => {
     reply({
@@ -119,7 +120,10 @@ function destroy (request, reply) {
 function search (search) {
   if (search) {
     const conditions = {
-      name: {
+      code: {
+        $ilike: '%' + search + '%'
+      },
+      '$Client.name$': {
         $ilike: '%' + search + '%'
       }
     };
