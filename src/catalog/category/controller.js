@@ -16,7 +16,7 @@ CategoryController.prototype = {
 
 module.exports = CategoryController;
 
-// [GET] /category?search=produto a
+// [GET] /category
 function list (request, reply) {
   this.model
   .scope({
