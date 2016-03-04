@@ -207,6 +207,232 @@ describe('Routes /client', () => {
       });
     });
 
+    it('returns 400 HTTP status code  when no `name` is send', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/client',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          lastName: 'lastName',
+          email: 'email@email.com'
+        }};
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "name" fails because ["name" is required]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when no `lastName` is send', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/client',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'name',
+          email: 'email@email.com'
+        }};
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "lastName" fails because ["lastName" is required]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when no `email` is send', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/client',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'name',
+          lastName: 'lastName'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "email" fails because ["email" is required]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `name` is empty', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/client',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: '',
+          lastName: 'lastName',
+          email: 'email@email.com'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "name" fails because ["name" is not allowed to be empty]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `lastName` is empty', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/client',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'name',
+          lastName: '',
+          email: 'email@email.com'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "lastName" fails because ["lastName" is not allowed to be empty]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `email` is empty', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/client',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'name',
+          lastName: 'lastName',
+          email: ''
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "email" fails because ["email" is not allowed to be empty]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `name` isn\'t a string', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/client',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 0,
+          lastName: 'lastName',
+          email: 'email@email.com'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "name" fails because ["name" must be a string]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `lastName` isn\'t a string', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/client',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'name',
+          lastName: 0,
+          email: 'email@email.com'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "lastName" fails because ["lastName" must be a string]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `email` isn\'t a string', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/client',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'name',
+          lastName: 'lastName',
+          email: 0
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "email" fails because ["email" must be a string]');
+        done();
+      });
+    });
+
+    it('return 400 HTTP status code when `name` haven\'t more than 250 chars', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/client',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+          lastName: 'lastName',
+          email: 'email@email.com'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "name" fails because ["name" length must be less than or equal to 250 characters long]');
+        done();
+      });
+    });
+
+    it('return 400 HTTP status code when `email` haven\'t more than 120 chars', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/client',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'name',
+          lastName: 'lastName',
+          email: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@email.com'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "email" fails because ["email" length must be less than or equal to 120 characters long]');
+        done();
+      });
+    });
+
     it('returns 201 HTTP status code when all data is correct', (done) => {
       const options = {
         method: 'POST',
@@ -216,7 +442,8 @@ describe('Routes /client', () => {
           name: 'name',
           lastName: 'lastName',
           email: 'email@email.com'
-        }};
+        }
+      };
       server.inject(options, (response) => {
         expect(response).to.have.property('statusCode', 201);
         expect(response).to.have.property('result');
@@ -248,6 +475,207 @@ describe('Routes /client', () => {
           client = response.result;
           done();
         });
+      });
+    });
+
+    it('return 404 HTTP status code when the specified id is not found', (done) => {
+      const options = {
+        method: 'GET',
+        url: '/client/1000',
+        headers: {'Authorization': 'Bearer ' + userInfo}
+      };
+
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 404);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 404);
+        expect(response.result).to.have.property('error', 'Not Found');
+
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code when no body is sended', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/client/' + client.id,
+        headers: {'Authorization': 'Bearer ' + userInfo}
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', '"value" must be an object');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `name` is empty', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/client/' + client.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: '',
+          lastName: 'lastName',
+          email: 'email@email.com'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "name" fails because ["name" is not allowed to be empty]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `lastName` is empty', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/client/' + client.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'name',
+          lastName: '',
+          email: 'email@email.com'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "lastName" fails because ["lastName" is not allowed to be empty]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `email` is empty', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/client/' + client.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'name',
+          lastName: 'lastName',
+          email: ''
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "email" fails because ["email" is not allowed to be empty]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `name` isn\'t a string', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/client/' + client.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 0,
+          lastName: 'lastName',
+          email: 'email@email.com'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "name" fails because ["name" must be a string]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `lastName` isn\'t a string', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/client/' + client.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'name',
+          lastName: 0,
+          email: 'email@email.com'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "lastName" fails because ["lastName" must be a string]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `email` isn\'t a string', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/client/' + client.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'name',
+          lastName: 'lastName',
+          email: 0
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "email" fails because ["email" must be a string]');
+        done();
+      });
+    });
+
+    it('return 400 HTTP status code when `name` haven\'t more than 250 chars', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/client/' + client.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+          lastName: 'lastName',
+          email: 'email@email.com'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "name" fails because ["name" length must be less than or equal to 250 characters long]');
+        done();
+      });
+    });
+
+    it('return 400 HTTP status code when `email` haven\'t more than 120 chars', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/client/' + client.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          name: 'name',
+          lastName: 'lastName',
+          email: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@email.com'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "email" fails because ["email" length must be less than or equal to 120 characters long]');
+        done();
       });
     });
 

@@ -199,6 +199,56 @@ describe('Routes /category', () => {
       });
     });
 
+    it('returns 400 HTTP status code  when no `description` is send', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/category',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {}};
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "description" fails because ["description" is required]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `description` is empty', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/category',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {description: ''}
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "description" fails because ["description" is not allowed to be empty]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `description` isn\'t a string', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/category',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {description: 0}
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "description" fails because ["description" must be a string]');
+        done();
+      });
+    });
+
     it('returns 201 HTTP status code when all data is correct', (done) => {
       const options = {
         method: 'POST',
@@ -237,12 +287,61 @@ describe('Routes /category', () => {
       });
     });
 
+    it('returns 400 HTTP status code when no body is sended', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/category/' + category.id,
+        headers: {'Authorization': 'Bearer ' + userInfo}
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', '"value" must be an object');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when no `description` is send', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/category/' + category.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {}};
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "description" fails because ["description" is required]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `description` is empty', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/category/' + category.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {description: ''}
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "description" fails because ["description" is not allowed to be empty]');
+        done();
+      });
+    });
+
     it('returns 400 HTTP status code  when `description` isn\'t a string', (done) => {
       const options = {
         method: 'PUT',
         url: '/category/' + category.id,
         headers: {'Authorization': 'Bearer ' + userInfo},
-        payload: {name: 'Smartphone', description: 0}
+        payload: {description: 0}
       };
       server.inject(options, (response) => {
         expect(response).to.have.property('statusCode', 400);

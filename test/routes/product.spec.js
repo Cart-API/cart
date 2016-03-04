@@ -235,6 +235,222 @@ describe('Routes /product', () => {
       });
     });
 
+    it('returns 400 HTTP status code  when no `reference` is send', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/product',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          description: 'description',
+          unit: 2,
+          category: category.id
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "reference" fails because ["reference" is required]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when no `description` is send', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/product',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: '001',
+          unit: 2,
+          category: category.id
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "description" fails because ["description" is required]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when no `unit` is send', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/product',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: '001',
+          description: 'description',
+          category: category.id
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "unit" fails because ["unit" is required]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when no `category` is send', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/product',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: '001',
+          description: 'description',
+          unit: 2
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "category" fails because ["category" is required]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `reference` is empty', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/product',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: '',
+          description: 'description',
+          unit: 2,
+          category: category.id
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "reference" fails because ["reference" is not allowed to be empty]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `description` is empty', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/product',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: '001',
+          description: '',
+          unit: 2,
+          category: category.id
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "description" fails because ["description" is not allowed to be empty]');
+        done();
+      });
+    });
+
+    it('return 400 HTTP status code when `unit` isn\'t a positive number ', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/product',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: '001',
+          description: 'description',
+          unit: 0,
+          category: category.id
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "unit" fails because ["unit" must be a positive number]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `reference` isn\'t a string', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/product',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: 0,
+          description: 'description',
+          unit: 1,
+          category: category.id
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "reference" fails because ["reference" must be a string]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `description` isn\'t a string', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/product',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: '001',
+          description: 0,
+          unit: 1,
+          category: category.id
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "description" fails because ["description" must be a string]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `category` isn\'t a number', (done) => {
+      const options = {
+        method: 'POST',
+        url: '/product',
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: '001',
+          description: 'reference',
+          unit: 1,
+          category: 'category'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "category" fails because ["category" must be a number]');
+        done();
+      });
+    });
+
     it('returns 201 HTTP status code when all data is correct', (done) => {
       const options = {
         method: 'POST',
@@ -279,6 +495,138 @@ describe('Routes /product', () => {
           product = response.result;
           done();
         });
+      });
+    });
+
+    it('returns 400 HTTP status code  when `reference` is empty', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/product/' + product.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: '',
+          description: 'description',
+          unit: 2,
+          category: category.id
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "reference" fails because ["reference" is not allowed to be empty]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `description` is empty', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/product/' + product.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: '001',
+          description: '',
+          unit: 2,
+          category: category.id
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "description" fails because ["description" is not allowed to be empty]');
+        done();
+      });
+    });
+
+    it('return 400 HTTP status code when `unit` isn\'t a positive number ', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/product/' + product.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: '001',
+          description: 'description',
+          unit: 0,
+          category: category.id
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "unit" fails because ["unit" must be a positive number]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `reference` isn\'t a string', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/product/' + product.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: 0,
+          description: 'description',
+          unit: 1,
+          category: category.id
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "reference" fails because ["reference" must be a string]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `description` isn\'t a string', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/product/' + product.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: '001',
+          description: 0,
+          unit: 1,
+          category: category.id
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "description" fails because ["description" must be a string]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `category` isn\'t a number', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/product/' + product.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          reference: '001',
+          description: 'reference',
+          unit: 1,
+          category: 'category'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "category" fails because ["category" must be a number]');
+        done();
       });
     });
 
