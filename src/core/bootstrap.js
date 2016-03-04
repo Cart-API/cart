@@ -8,7 +8,6 @@ const path = require('path');
 const Server = require('./server');
 
 module.exports = {start};
-
 function start () {
   return Promise.resolve()
   .then(() => {
@@ -22,8 +21,8 @@ function start () {
           database: process.env.DB_NAME || 'cart',
           username: process.env.DB_USERNAME || 'cart',
           password: process.env.DB_PASSWORD || 'cart',
-          port: process.env.DB_PORT || 5434,
           options: {
+            port: process.env.DB_PORT || 5432,
             dialect: process.env.DB_DIALECT || 'postgres'
           }
         }
