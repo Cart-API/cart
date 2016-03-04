@@ -23,7 +23,8 @@ function start () {
           password: process.env.DB_PASSWORD || 'cart',
           options: {
             port: process.env.DB_PORT || 5432,
-            dialect: process.env.DB_DIALECT || 'postgres'
+            dialect: process.env.DB_DIALECT || 'postgres',
+            logging: false
           }
         }
       }
