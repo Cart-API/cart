@@ -41,9 +41,6 @@
     "k7": "^1.0.1",
     "k7-sequelize": "^1.0.0",
     "lodash": "~4.0.0",
-    "pg": "^4.5.1",
-    "pg-hstore": "^2.3.2",
-    "sequelize": "~3.17.1",
     "sequelize-cli": "~2.3.1",
     "umzug": "~1.8.0"
   },
