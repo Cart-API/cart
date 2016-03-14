@@ -461,7 +461,8 @@ describe('Routes /product', () => {
           description: 'description',
           unit: 2,
           category: category.id
-        }};
+        }
+      };
       server.inject(options, (response) => {
         expect(response).to.have.property('statusCode', 201);
         expect(response).to.have.property('result');
