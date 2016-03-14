@@ -5,7 +5,9 @@ const envPath = process.env.NODE_ENV === 'test' ? __dirname + '/../../test/.env'
 require('dotenv').config({ path: envPath });
 
 const Umzug = require('umzug');
-const Sequelize = require('sequelize');
+const K7Sequelize = require('k7-sequelize');
+const k7 = new K7Sequelize();
+const Sequelize = k7.db.Sequelize;
 
 const config = {
   username: process.env.DB_USERNAME || 'postgres',
@@ -60,4 +62,3 @@ function run (type) {
       process.exit(1);
     });
 }
-
