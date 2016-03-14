@@ -15,7 +15,8 @@ module.exports = OrderValidator;
 
 const schema = {
   code: Joi
-    .string(5),
+    .string()
+    .max(5),
   emission: Joi
     .date(),
   delivery: Joi
