@@ -5,6 +5,7 @@ require('dotenv').config({ path: __dirname + '/.env', silent: true });
 // load deps
 const lab = exports.lab = require('lab').script();
 const chai = require('chai');
+chai.use(require('chai-datetime'));
 
 // chai plugins
 chai.use(require('chai-things'));
