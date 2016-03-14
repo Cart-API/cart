@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "chai": "~3.4.1",
+    "chai-datetime": "^1.4.1",
     "chai-things": "~0.2.0",
     "coveralls": "^2.11.6",
     "lab": "~8.0.1",
