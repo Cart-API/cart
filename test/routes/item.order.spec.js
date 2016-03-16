@@ -174,5 +174,700 @@ describe('Routes /product', () => {
       });
     });
   });
-});
 
+  describe('GET /item-order/{id}', () => {
+    let itemOrder;
+    before((done) => {
+      return db.ItemOrder.destroy({where: {}})
+      .then(() => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            order: order.id,
+            product: product.id,
+            price: 1,
+            quantity: 1
+          }
+        };
+
+        server.inject(options, (response) => {
+          itemOrder = response.result;
+          done();
+        });
+      });
+    });
+
+    describe('when request is not authenticated', () => {
+      it('returns 401 HTTP status code', (done) => {
+        const options = {method: 'GET', url: '/item-order/' + itemOrder.id};
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 401);
+          done();
+        });
+      });
+    });
+
+    describe('when request is authenticated', () => {
+      it('returns 200 HTTP status code', (done) => {
+        const options = {
+          method: 'GET',
+          url: '/item-order/' + order.id + '/' + itemOrder.id,
+          headers: {'Authorization': 'Bearer ' + userInfo}
+        };
+
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 200);
+          done();
+        });
+      });
+
+      it('returns 1 item-order at a time', (done) => {
+        const options = {
+          method: 'GET',
+          url: '/item-order/' + order.id + '/' + itemOrder.id,
+          headers: {'Authorization': 'Bearer ' + userInfo}
+        };
+
+        server.inject(options, (response) => {
+          expect(response.result.Order).to.have.property('id', itemOrder.order);
+          expect(response.result.Product).to.have.property('id', itemOrder.product);
+          expect(response.result).to.have.property('price', itemOrder.price);
+          expect(response.result).to.have.property('quantity', itemOrder.quantity);
+          done();
+        });
+      });
+
+      it('return 400 HTTP status code when the specified id is invalid', (done) => {
+        const options = {
+          method: 'GET',
+          url: '/item-order/' + order.id + '/aaa',
+          headers: {'Authorization': 'Bearer ' + userInfo}
+        };
+
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', 'child "id" fails because ["id" must be a number]');
+          done();
+        });
+      });
+
+      it('return 404 HTTP status code when the specified id is not found', (done) => {
+        const options = {
+          method: 'GET',
+          url: '/item-order/' + order.id + '/1000',
+          headers: {'Authorization': 'Bearer ' + userInfo}
+        };
+
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 404);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 404);
+          expect(response.result).to.have.property('error', 'Not Found');
+
+          done();
+        });
+      });
+    });
+  });
+
+  describe('POST /item-order', () => {
+    before((done) => {
+      return db.ItemOrder.destroy({where: {}})
+      .then(() => {
+        done();
+      });
+    });
+
+    describe('when request is not authenticated', () => {
+      it('returns 401 HTTP status code', (done) => {
+        const options = {method: 'POST', url: '/item-order'};
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 401);
+          done();
+        });
+      });
+
+      it('returns 400 HTTP status code when no body is sended', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo}
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', '"value" must be an object');
+          done();
+        });
+      });
+
+      it('returns 400 HTTP status code  when no `order` is send', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: product.id,
+            price: 1,
+            quantity: 1
+          }
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', 'child "order" fails because ["order" is required]');
+          done();
+        });
+      });
+
+      it('returns 400 HTTP status code  when no `product` is send', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            order: order.id,
+            price: 1,
+            quantity: 1
+          }
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', 'child "product" fails because ["product" is required]');
+          done();
+        });
+      });
+
+      it('returns 400 HTTP status code  when no `price` is send', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: product.id,
+            order: order.id,
+            quantity: 1
+          }
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', 'child "price" fails because ["price" is required]');
+          done();
+        });
+      });
+
+      it('returns 400 HTTP status code  when no `quantity` is send', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: product.id,
+            order: order.id,
+            price: 1
+          }
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', 'child "quantity" fails because ["quantity" is required]');
+          done();
+        });
+      });
+
+      it('returns 400 HTTP status code  when `product` isn\'t a number', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: 'AAA',
+            order: order.id,
+            price: 1,
+            quantity: 1
+          }
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', 'child "product" fails because ["product" must be a number]');
+          done();
+        });
+      });
+
+      it('returns 400 HTTP status code  when `order` isn\'t a number', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: product.id,
+            order: 'AAA',
+            price: 1,
+            quantity: 1
+          }
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', 'child "order" fails because ["order" must be a number]');
+          done();
+        });
+      });
+
+      it('returns 400 HTTP status code  when `price` isn\'t a number', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: product.id,
+            order: order.id,
+            price: 'AAA',
+            quantity: 1
+          }
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', 'child "price" fails because ["price" must be a number]');
+          done();
+        });
+      });
+
+      it('returns 400 HTTP status code  when `quantity` isn\'t a number', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: product.id,
+            order: order.id,
+            price: 1,
+            quantity: 'AAA'
+          }
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', 'child "quantity" fails because ["quantity" must be a number]');
+          done();
+        });
+      });
+
+      it('return 400 HTTP status code when `product` isn\'t a positive number ', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: -1,
+            order: order.id,
+            price: 1,
+            quantity: 1
+          }
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', 'child "product" fails because ["product" must be a positive number]');
+          done();
+        });
+      });
+
+      it('return 400 HTTP status code when `order` isn\'t a positive number ', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: product.id,
+            order: -1,
+            price: 1,
+            quantity: 1
+          }
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', 'child "order" fails because ["order" must be a positive number]');
+          done();
+        });
+      });
+
+      it('return 400 HTTP status code when `price` isn\'t a positive number ', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: product.id,
+            order: order.id,
+            price: -1,
+            quantity: 1
+          }
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', 'child "price" fails because ["price" must be a positive number]');
+          done();
+        });
+      });
+
+      it('return 400 HTTP status code when `quantity` isn\'t a positive number ', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: product.id,
+            order: order.id,
+            price: 1,
+            quantity: -1
+          }
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 400);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('statusCode', 400);
+          expect(response.result).to.have.property('error', 'Bad Request');
+          expect(response.result).to.have.property('message', 'child "quantity" fails because ["quantity" must be a positive number]');
+          done();
+        });
+      });
+
+      it('returns 201 HTTP status code when all data is correct', (done) => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: product.id,
+            order: order.id,
+            price: 1,
+            quantity: 1
+          }
+        };
+        server.inject(options, (response) => {
+          expect(response).to.have.property('statusCode', 201);
+          expect(response).to.have.property('result');
+          expect(response.result).to.have.property('product', product.id);
+          expect(response.result).to.have.property('order', order.id);
+          expect(response.result).to.have.property('price', 1);
+          expect(response.result).to.have.property('quantity', 1);
+          done();
+        });
+      });
+    });
+  });
+
+  describe('PUT /item-order/{id}', () => {
+    let itemOrder;
+    before((done) => {
+      return db.ItemOrder.destroy({where: {}})
+      .then(() => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: product.id,
+            order: order.id,
+            price: 1,
+            quantity: 1
+          }
+        };
+
+        server.inject(options, (response) => {
+          itemOrder = response.result;
+          done();
+        });
+      });
+    });
+
+    it('returns 400 HTTP status code  when `product` isn\'t a number', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/item-order/' + order.id + '/' + itemOrder.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          product: 'AAA',
+          order: order.id,
+          price: 1,
+          quantity: 1
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "product" fails because ["product" must be a number]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `order` isn\'t a number', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/item-order/' + order.id + '/' + itemOrder.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          product: product.id,
+          order: 'AAA',
+          price: 1,
+          quantity: 1
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "order" fails because ["order" must be a number]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `price` isn\'t a number', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/item-order/' + order.id + '/' + itemOrder.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          product: product.id,
+          order: order.id,
+          price: 'AAA',
+          quantity: 1
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "price" fails because ["price" must be a number]');
+        done();
+      });
+    });
+
+    it('returns 400 HTTP status code  when `quantity` isn\'t a number', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/item-order/' + order.id + '/' + itemOrder.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          product: product.id,
+          order: order.id,
+          price: 1,
+          quantity: 'AAA'
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "quantity" fails because ["quantity" must be a number]');
+        done();
+      });
+    });
+
+    it('return 400 HTTP status code when `product` isn\'t a positive number ', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/item-order/' + order.id + '/' + itemOrder.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          product: -1,
+          order: order.id,
+          price: 1,
+          quantity: 1
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "product" fails because ["product" must be a positive number]');
+        done();
+      });
+    });
+
+    it('return 400 HTTP status code when `order` isn\'t a positive number ', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/item-order/' + order.id + '/' + itemOrder.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          product: product.id,
+          order: -1,
+          price: 1,
+          quantity: 1
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "order" fails because ["order" must be a positive number]');
+        done();
+      });
+    });
+
+    it('return 400 HTTP status code when `price` isn\'t a positive number ', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/item-order/' + order.id + '/' + itemOrder.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          product: product.id,
+          order: order.id,
+          price: -1,
+          quantity: 1
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "price" fails because ["price" must be a positive number]');
+        done();
+      });
+    });
+
+    it('return 400 HTTP status code when `quantity` isn\'t a positive number ', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/item-order/' + order.id + '/' + itemOrder.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          product: product.id,
+          order: order.id,
+          price: 1,
+          quantity: -1
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "quantity" fails because ["quantity" must be a positive number]');
+        done();
+      });
+    });
+
+    it('returns 201 HTTP status code when all data is correct', (done) => {
+      const options = {
+        method: 'PUT',
+        url: '/item-order/' + order.id + '/' + itemOrder.id,
+        headers: {'Authorization': 'Bearer ' + userInfo},
+        payload: {
+          product: product.id,
+          order: order.id,
+          price: 2,
+          quantity: 2
+        }
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 200);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('product', product.id);
+        expect(response.result).to.have.property('order', order.id);
+        expect(response.result).to.have.property('price', 2);
+        expect(response.result).to.have.property('quantity', 2);
+        done();
+      });
+    });
+  });
+
+  describe('DELETE /item-order/{id}', () => {
+    let itemOrder;
+    before((done) => {
+      return db.ItemOrder.destroy({where: {}})
+      .then(() => {
+        const options = {
+          method: 'POST',
+          url: '/item-order',
+          headers: {'Authorization': 'Bearer ' + userInfo},
+          payload: {
+            product: product.id,
+            order: order.id,
+            price: 2,
+            quantity: 2
+          }
+        };
+
+        server.inject(options, (response) => {
+          itemOrder = response.result;
+          done();
+        });
+      });
+    });
+
+    it('returns 400 HTTP status code when no `id` is send', (done) => {
+      const options = {
+        method: 'DELETE',
+        url: '/item-order/' + order.id + '/',
+        headers: {'Authorization': 'Bearer ' + userInfo}
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 400);
+        expect(response).to.have.property('result');
+        expect(response.result).to.have.property('statusCode', 400);
+        expect(response.result).to.have.property('error', 'Bad Request');
+        expect(response.result).to.have.property('message', 'child "id" fails because ["id" is required]');
+        done();
+      });
+    });
+
+    it('returns 200 HTTP status code when record is deleted', (done) => {
+      const options = {
+        method: 'DELETE',
+        url: '/item-order/' + order.id + '/' + itemOrder.id,
+        headers: {'Authorization': 'Bearer ' + userInfo}
+      };
+      server.inject(options, (response) => {
+        expect(response).to.have.property('statusCode', 200);
+        expect(response).to.have.property('result');
+        done();
+      });
+    });
+  });
+});
