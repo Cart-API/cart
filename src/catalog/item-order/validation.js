@@ -16,10 +16,12 @@ module.exports = ItemOrderValidator;
 const schema = {
   order: Joi
     .number()
-    .integer(),
+    .integer()
+    .positive(),
   product: Joi
     .number()
-    .integer(),
+    .integer()
+    .positive(),
   price: Joi
     .number()
     .precision(2)
@@ -27,6 +29,7 @@ const schema = {
   quantity: Joi
     .number()
     .integer()
+    .positive()
 };
 
 function list () {
