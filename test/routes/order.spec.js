@@ -451,7 +451,6 @@ describe('Routes /order', () => {
         }
       };
       server.inject(options, (response) => {
-        console.log(response.result);
         expect(response).to.have.property('statusCode', 400);
         expect(response).to.have.property('result');
         expect(response.result).to.have.property('statusCode', 400);
@@ -596,7 +595,6 @@ describe('Routes /order', () => {
         }
       };
       server.inject(options, (response) => {
-        console.log(response.result);
         expect(response).to.have.property('statusCode', 201);
         expect(response).to.have.property('result');
         expect(response.result).to.have.property('code', '00001');
@@ -715,7 +713,6 @@ describe('Routes /order', () => {
         }
       };
       server.inject(options, (response) => {
-        console.log(response.result);
         expect(response).to.have.property('statusCode', 400);
         expect(response).to.have.property('result');
         expect(response.result).to.have.property('statusCode', 400);

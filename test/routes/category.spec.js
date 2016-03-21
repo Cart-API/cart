@@ -416,7 +416,6 @@ describe('Routes /category', () => {
         headers: {'Authorization': 'Bearer ' + userInfo}
       };
       server.inject(options, (response) => {
-        console.log(response.result);
         expect(response).to.have.property('statusCode', 200);
         expect(response).to.have.property('result');
         done();
