@@ -13,6 +13,9 @@ exports.register = (server, options, next) => {
       method: 'GET',
       path: '/item-order/{order}',
       config: {
+        description: 'GET item',
+        notes: 'Returns itens by the id passed in the path for order',
+        tags: ['api'],
         handler: controller.list,
         validate: Validator.list()
       }
@@ -21,6 +24,9 @@ exports.register = (server, options, next) => {
       method: 'GET',
       path: '/item-order/{order}/{id}',
       config: {
+        description: 'GET item',
+        notes: 'Return the item based on the id and order',
+        tags: ['api'],
         handler: controller.read,
         validate: Validator.read()
       }
@@ -29,14 +35,20 @@ exports.register = (server, options, next) => {
       method: 'POST',
       path: '/item-order',
       config: {
+        description: 'POST item',
+        notes: 'Save item',
+        tags: ['api'],
         handler: controller.create,
         validate: Validator.create()
       }
     },
     {
       method: 'PUT',
-      path: '/item-order/{order}/{id?}',
+      path: '/item-order/{order}/{id}',
       config: {
+        description: 'PUT item',
+        notes: 'Update the item based on the id and order',
+        tags: ['api'],
         handler: controller.update,
         validate: Validator.update()
       }
@@ -45,6 +57,9 @@ exports.register = (server, options, next) => {
       method: 'DELETE',
       path: '/item-order/{order}/{id?}',
       config: {
+        description: 'DELETE item',
+        notes: 'Delete the item based on the id and order',
+        tags: ['api'],
         handler: controller.destroy,
         validate: Validator.destroy()
       }

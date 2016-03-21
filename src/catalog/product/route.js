@@ -13,6 +13,9 @@ exports.register = (server, options, next) => {
       method: 'GET',
       path: '/product',
       config: {
+        description: 'GET products',
+        notes: 'Returns a products',
+        tags: ['api'],
         handler: controller.list,
         validate: Validator.list()
       }
@@ -21,6 +24,9 @@ exports.register = (server, options, next) => {
       method: 'GET',
       path: '/product/{id}',
       config: {
+        description: 'GET product',
+        notes: 'Returns a product item by the id passed in the path',
+        tags: ['api'],
         handler: controller.read,
         validate: Validator.read()
       }
@@ -29,14 +35,20 @@ exports.register = (server, options, next) => {
       method: 'POST',
       path: '/product',
       config: {
+        description: 'POST product',
+        notes: 'Save a product',
+        tags: ['api'],
         handler: controller.create,
         validate: Validator.create()
       }
     },
     {
       method: 'PUT',
-      path: '/product/{id?}',
+      path: '/product/{id}',
       config: {
+        description: 'PUT product',
+        notes: 'Returns a product item by the id passed in the path',
+        tags: ['api'],
         handler: controller.update,
         validate: Validator.update()
       }
@@ -45,6 +57,9 @@ exports.register = (server, options, next) => {
       method: 'DELETE',
       path: '/product/{id?}',
       config: {
+        description: 'DELETE product',
+        notes: 'Returns a product item by the id passed in the path',
+        tags: ['api'],
         handler: controller.destroy,
         validate: Validator.destroy()
       }

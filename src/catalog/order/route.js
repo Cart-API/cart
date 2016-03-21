@@ -13,6 +13,9 @@ exports.register = (server, options, next) => {
       method: 'GET',
       path: '/order',
       config: {
+        description: 'GET order',
+        notes: 'Returns a order',
+        tags: ['api'],
         handler: controller.list,
         validate: Validator.list()
       }
@@ -21,6 +24,9 @@ exports.register = (server, options, next) => {
       method: 'GET',
       path: '/order/{id}',
       config: {
+        description: 'GET order',
+        notes: 'Returns a order item by the id passed in the path',
+        tags: ['api'],
         handler: controller.read,
         validate: Validator.read()
       }
@@ -29,14 +35,20 @@ exports.register = (server, options, next) => {
       method: 'POST',
       path: '/order',
       config: {
+        description: 'GET order',
+        notes: 'Save a order',
+        tags: ['api'],
         handler: controller.create,
         validate: Validator.create()
       }
     },
     {
       method: 'PUT',
-      path: '/order/{id?}',
+      path: '/order/{id}',
       config: {
+        description: 'PUT order',
+        notes: 'Update a order item by the id passed in the path',
+        tags: ['api'],
         handler: controller.update,
         validate: Validator.update()
       }
@@ -45,6 +57,9 @@ exports.register = (server, options, next) => {
       method: 'DELETE',
       path: '/order/{id?}',
       config: {
+        description: 'DELETE order',
+        notes: 'Delete a order item by the id passed in the path',
+        tags: ['api'],
         handler: controller.destroy,
         validate: Validator.destroy()
       }

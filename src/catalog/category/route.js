@@ -13,6 +13,9 @@ exports.register = (server, options, next) => {
       method: 'GET',
       path: '/category',
       config: {
+        description: 'GET categories',
+        notes: 'Returns a categories',
+        tags: ['api'],
         handler: controller.list,
         validate: Validator.list()
       }
@@ -21,6 +24,9 @@ exports.register = (server, options, next) => {
       method: 'GET',
       path: '/category/{id}',
       config: {
+        description: 'GET category',
+        notes: 'Returns a category item by the id passed in the path',
+        tags: ['api'],
         handler: controller.read,
         validate: Validator.read()
       }
@@ -29,6 +35,9 @@ exports.register = (server, options, next) => {
       method: 'POST',
       path: '/category',
       config: {
+        description: 'POST category',
+        notes: 'Save a category',
+        tags: ['api'],
         handler: controller.create,
         validate: Validator.create()
       }
@@ -37,6 +46,9 @@ exports.register = (server, options, next) => {
       method: 'PUT',
       path: '/category/{id?}',
       config: {
+        description: 'PUT category',
+        notes: 'Update a category item by the id passed in the path',
+        tags: ['api'],
         handler: controller.update,
         validate: Validator.update()
       }
@@ -45,6 +57,9 @@ exports.register = (server, options, next) => {
       method: 'DELETE',
       path: '/category/{id?}',
       config: {
+        description: 'DELETE category',
+        notes: 'Delete a category item by the id passed in the path',
+        tags: ['api'],
         handler: controller.destroy,
         validate: Validator.destroy()
       }
@@ -58,4 +73,3 @@ exports.register.attributes = {
   name: 'category',
   version: '1.0.0'
 };
-

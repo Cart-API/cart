@@ -13,6 +13,9 @@ exports.register = (server, options, next) => {
       method: 'GET',
       path: '/client',
       config: {
+        description: 'GET clients',
+        notes: 'Returns a clients',
+        tags: ['api'],
         handler: controller.list,
         validate: Validator.list()
       }
@@ -21,6 +24,9 @@ exports.register = (server, options, next) => {
       method: 'GET',
       path: '/client/{id}',
       config: {
+        description: 'GET client',
+        notes: 'Returns a client item by the id passed in the path',
+        tags: ['api'],
         handler: controller.read,
         validate: Validator.read()
       }
@@ -29,14 +35,20 @@ exports.register = (server, options, next) => {
       method: 'POST',
       path: '/client',
       config: {
+        description: 'POST client',
+        notes: 'Save a client',
+        tags: ['api'],
         handler: controller.create,
         validate: Validator.create()
       }
     },
     {
       method: 'PUT',
-      path: '/client/{id?}',
+      path: '/client/{id}',
       config: {
+        description: 'PUT client',
+        notes: 'Update a client item by the id passed in the path',
+        tags: ['api'],
         handler: controller.update,
         validate: Validator.update()
       }
@@ -45,6 +57,9 @@ exports.register = (server, options, next) => {
       method: 'DELETE',
       path: '/client/{id?}',
       config: {
+        description: 'DELETE client',
+        notes: 'DELETE a client item by the id passed in the path',
+        tags: ['api'],
         handler: controller.destroy,
         validate: Validator.destroy()
       }
