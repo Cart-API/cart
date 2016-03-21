@@ -12,19 +12,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thebergamo/cart.git"
+    "url": "git+https://github.com/Cart-API/cart"
   },
   "keywords": [
     "ecommerce",
     "shop",
     "platform"
   ],
-  "author": "Marcos Bérgamo <marcos@thedon.com.br>",
+  "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/thebergamo/cart/issues"
+    "url": "https://github.com/Cart-API/cart/issues"
   },
-  "homepage": "https://github.com/thebergamo/cart#readme",
+  "homepage": "https://github.com/Cart-API/cart#readme",
   "dependencies": {
     "bcrypt": "~0.8.5",
     "bluebird": "~3.1.1",
@@ -36,13 +36,16 @@
     "hapi": "~12.1.0",
     "hapi-auth-jwt2": "~5.3.1",
     "hapi-boom-decorators": "~1.1.0",
+    "hapi-swagger": "^4.3.0",
+    "inert": "^3.2.0",
     "joi": "~7.1.0",
     "jsonwebtoken": "~5.5.0",
     "k7": "^1.0.1",
     "k7-sequelize": "^1.0.0",
     "lodash": "~4.0.0",
     "sequelize-cli": "~2.3.1",
-    "umzug": "~1.8.0"
+    "umzug": "~1.8.0",
+    "vision": "^4.0.1"
   },
   "devDependencies": {
     "chai": "~3.4.1",
