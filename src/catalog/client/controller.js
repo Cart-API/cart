@@ -64,6 +64,8 @@ function create (request, reply) {
   let payload = request.payload;
   payload.user = request.auth.credentials.id;
 
+  console.log(payload);
+
   this.model.create(payload)
   .then((client) => reply(client).code(201))
   .catch((err) => reply.badImplementation(err.message));
