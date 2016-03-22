@@ -5,8 +5,16 @@
 
 set -e
 
+[ "$TRAVIS" = true ] || cd "$(dirname "$0")/.."
+
+if [ "$TRAVIS" = true ]; then
+  echo "==> THIS IS TRAVIS"
+  echo "=>> Seeing up deps…"
+  cp test/.envtravis .env
+  export $(cat < .env)
+fi
+
 if [ -f "package.json" ]; then
   echo "==> Installing module dependencies…"
   npm install
 fi
-
