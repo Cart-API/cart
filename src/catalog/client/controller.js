@@ -18,16 +18,24 @@ module.exports = ClientController;
 
 // [GET] /client
 function list (request, reply) {
-  this.model
-  .scope({
-    method: ['user', request.auth.credentials.id]
-  })
-  .findAndCountAll({
+  let options = {
     attributes: ['id', 'name', 'lastName', 'email'],
     order: 'name',
     offset: request.offset(),
     limit: request.limit
+  };
+
+  if (this.search(request.search())) {
+    options.where = {
+      $or: this.search(request.search())
+    };
+  }
+
+  this.model
+  .scope({
+    method: ['user', request.auth.credentials.id]
   })
+  .findAndCountAll(options)
   .then((result) => {
     reply({
       data: result.rows,
@@ -60,8 +68,6 @@ function read (request, reply) {
 function create (request, reply) {
   let payload = request.payload;
   payload.user = request.auth.credentials.id;
-
-  console.log(payload);
 
   this.model.create(payload)
   .then((client) => reply(client).code(201))

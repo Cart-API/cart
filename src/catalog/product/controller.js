@@ -18,11 +18,7 @@ module.exports = ProductController;
 
 // [GET] /category
 function list (request, reply) {
-  this.model
-  .scope({
-    method: ['user', request.auth.credentials.id]
-  })
-  .findAndCountAll({
+  let options = {
     attributes: ['id', 'reference', 'description', 'unit'],
     order: 'description',
     offset: request.offset(),
@@ -31,11 +27,20 @@ function list (request, reply) {
       model: this.database.Category,
       attributes: ['id', 'description'],
       required: true
-    }],
-    where: {
+    }]
+  };
+
+  if (this.search(request.search())) {
+    options.where = {
       $or: this.search(request.search())
-    }
+    };
+  }
+
+  this.model
+  .scope({
+    method: ['user', request.auth.credentials.id]
   })
+  .findAndCountAll(options)
   .then((result) => {
     reply({
       data: result.rows,

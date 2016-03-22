@@ -18,22 +18,27 @@ module.exports = OrderController;
 
 // [GET] /order
 function list (request, reply) {
-  this.model
-  .scope({
-    method: ['user', request.auth.credentials.id]
-  })
-  .findAndCountAll({
+  let options = {
     attributes: ['id', 'code', 'emission', 'delivery', 'price', 'discount'],
     order: 'code',
     include: [{
       model: this.database.Client,
       attributes: ['id', 'name'],
       required: true
-    }],
-    where: {
+    }]
+  };
+
+  if (this.search(request.search())) {
+    options.where = {
       $or: this.search(request.search())
-    }
+    };
+  }
+
+  this.model
+  .scope({
+    method: ['user', request.auth.credentials.id]
   })
+  .findAndCountAll(options)
   .then((result) => {
     reply({
       data: result.rows,

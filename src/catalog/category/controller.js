@@ -18,19 +18,24 @@ module.exports = CategoryController;
 
 // [GET] /category
 function list (request, reply) {
+  let options = {
+    attributes: ['id', 'description'],
+    order: 'description',
+    offset: request.offset(),
+    limit: request.limit
+  };
+
+  if (this.search(request.search())) {
+    options.where = {
+      $and: this.search(request.search())
+    };
+  }
+
   this.model
   .scope({
     method: ['user', request.auth.credentials.id]
   })
-  .findAndCountAll({
-    attributes: ['id', 'description'],
-    order: 'description',
-    offset: request.offset(),
-    limit: request.limit,
-    where: {
-      $and: this.search(request.search())
-    }
-  })
+  .findAndCountAll(options)
   .then((result) => {
     reply({
       data: result.rows,
