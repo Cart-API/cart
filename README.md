@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Cart-API/cart.svg?branch=master)](https://travis-ci.org/Cart-API/cart)
+
 # cart
 
 # Entity Relationship Model
