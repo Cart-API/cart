@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "scripts/test",
-    "coverage": "scripts/coverage",
+    "coverage": "semistandard",
     "start": "scripts/server",
     "migrate": "scripts/migration",
     "linter": "semistandard"
