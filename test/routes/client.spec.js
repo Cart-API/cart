@@ -63,7 +63,6 @@ describe('Routes /client', () => {
         headers: {'Authorization': 'Bearer ' + userInfo}
       };
       server.inject(options, (response) => {
-        console.log(response.result);
         expect(response).to.have.property('result');
 
         expect(response.result.data).to.contain.a.thing.with.property('name');
