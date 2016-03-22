@@ -24,7 +24,7 @@ function start () {
           options: {
             port: process.env.DB_PORT || 5432,
             dialect: process.env.DB_DIALECT || 'postgres',
-            logging: false
+            logging: console.log
           }
         }
       }
