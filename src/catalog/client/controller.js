@@ -26,10 +26,7 @@ function list (request, reply) {
     attributes: ['id', 'name', 'lastName', 'email'],
     order: 'name',
     offset: request.offset(),
-    limit: request.limit,
-    where: {
-      $or: this.search(request.search())
-    }
+    limit: request.limit
   })
   .then((result) => {
     reply({
