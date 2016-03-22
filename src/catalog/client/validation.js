@@ -21,7 +21,7 @@ const schema = {
     .trim(),
   lastName: Joi
     .string()
-    .default(''),
+    .max(250),
   email: Joi
     .string()
     .max(120)
