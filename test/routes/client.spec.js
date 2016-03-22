@@ -64,7 +64,6 @@ describe('Routes /client', () => {
       };
       server.inject(options, (response) => {
         console.log(response.result);
-        console.log(response);
         expect(response).to.have.property('result');
 
         expect(response.result.data).to.contain.a.thing.with.property('name');
