@@ -1,0 +1,3 @@
+[submodule "cart-ansible"]
+	path = cart-ansible
+	url = https://github.com/thebergamo/cart-ansible.git
