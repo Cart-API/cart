@@ -46,7 +46,7 @@ describe('Routes /product', () => {
               payload: {
                 reference: '001',
                 description: 'description 001',
-                unit: 1,
+                unitPrice: 1,
                 category: category.id
               }
             };
@@ -75,8 +75,6 @@ describe('Routes /product', () => {
                     code: '00001',
                     emission: new Date(),
                     delivery: new Date(),
-                    price: 1,
-                    discount: 1,
                     client: client.id
                   }
                 };
@@ -143,7 +141,7 @@ describe('Routes /product', () => {
           options.payload = {
             order: order.id,
             product: product.id,
-            price: 1,
+            unitPrice: 1,
             quantity: 1
           };
           reqs.push(server.inject(options));
@@ -167,7 +165,7 @@ describe('Routes /product', () => {
 
         expect(response.result.data).to.contain.a.thing.with.property('order');
         expect(response.result.data).to.contain.a.thing.with.property('product');
-        expect(response.result.data).to.contain.a.thing.with.property('price');
+        expect(response.result.data).to.contain.a.thing.with.property('unitPrice');
         expect(response.result.data).to.contain.a.thing.with.property('quantity');
         expect(response.result).to.have.property('count', 5);
         done();
@@ -187,7 +185,7 @@ describe('Routes /product', () => {
           payload: {
             order: order.id,
             product: product.id,
-            price: 1,
+            unitPrice: 1,
             quantity: 1
           }
         };
@@ -233,7 +231,7 @@ describe('Routes /product', () => {
         server.inject(options, (response) => {
           expect(response.result.Order).to.have.property('id', itemOrder.order);
           expect(response.result.Product).to.have.property('id', itemOrder.product);
-          expect(response.result).to.have.property('price', itemOrder.price);
+          expect(response.result).to.have.property('unitPrice', itemOrder.unitPrice);
           expect(response.result).to.have.property('quantity', itemOrder.quantity);
           done();
         });
@@ -315,7 +313,7 @@ describe('Routes /product', () => {
           headers: {'Authorization': 'Bearer ' + userInfo},
           payload: {
             product: product.id,
-            price: 1,
+            unitPrice: 1,
             quantity: 1
           }
         };
@@ -336,7 +334,7 @@ describe('Routes /product', () => {
           headers: {'Authorization': 'Bearer ' + userInfo},
           payload: {
             order: order.id,
-            price: 1,
+            unitPrice: 1,
             quantity: 1
           }
         };
@@ -350,7 +348,7 @@ describe('Routes /product', () => {
         });
       });
 
-      it('returns 400 HTTP status code  when no `price` is send', (done) => {
+      it('returns 400 HTTP status code  when no `unitPrice` is send', (done) => {
         const options = {
           method: 'POST',
           url: '/item-order',
@@ -366,7 +364,7 @@ describe('Routes /product', () => {
           expect(response).to.have.property('result');
           expect(response.result).to.have.property('statusCode', 400);
           expect(response.result).to.have.property('error', 'Bad Request');
-          expect(response.result).to.have.property('message', 'child "price" fails because ["price" is required]');
+          expect(response.result).to.have.property('message', 'child "unitPrice" fails because ["unitPrice" is required]');
           done();
         });
       });
@@ -379,7 +377,7 @@ describe('Routes /product', () => {
           payload: {
             product: product.id,
             order: order.id,
-            price: 1
+            unitPrice: 1
           }
         };
         server.inject(options, (response) => {
@@ -400,7 +398,7 @@ describe('Routes /product', () => {
           payload: {
             product: 'AAA',
             order: order.id,
-            price: 1,
+            unitPrice: 1,
             quantity: 1
           }
         };
@@ -422,7 +420,7 @@ describe('Routes /product', () => {
           payload: {
             product: product.id,
             order: 'AAA',
-            price: 1,
+            unitPrice: 1,
             quantity: 1
           }
         };
@@ -436,7 +434,7 @@ describe('Routes /product', () => {
         });
       });
 
-      it('returns 400 HTTP status code  when `price` isn\'t a number', (done) => {
+      it('returns 400 HTTP status code  when `unitPrice` isn\'t a number', (done) => {
         const options = {
           method: 'POST',
           url: '/item-order',
@@ -444,7 +442,7 @@ describe('Routes /product', () => {
           payload: {
             product: product.id,
             order: order.id,
-            price: 'AAA',
+            unitPrice: 'AAA',
             quantity: 1
           }
         };
@@ -453,7 +451,7 @@ describe('Routes /product', () => {
           expect(response).to.have.property('result');
           expect(response.result).to.have.property('statusCode', 400);
           expect(response.result).to.have.property('error', 'Bad Request');
-          expect(response.result).to.have.property('message', 'child "price" fails because ["price" must be a number]');
+          expect(response.result).to.have.property('message', 'child "unitPrice" fails because ["unitPrice" must be a number]');
           done();
         });
       });
@@ -466,7 +464,7 @@ describe('Routes /product', () => {
           payload: {
             product: product.id,
             order: order.id,
-            price: 1,
+            unitPrice: 1,
             quantity: 'AAA'
           }
         };
@@ -488,7 +486,7 @@ describe('Routes /product', () => {
           payload: {
             product: -1,
             order: order.id,
-            price: 1,
+            unitPrice: 1,
             quantity: 1
           }
         };
@@ -510,7 +508,7 @@ describe('Routes /product', () => {
           payload: {
             product: product.id,
             order: -1,
-            price: 1,
+            unitPrice: 1,
             quantity: 1
           }
         };
@@ -524,7 +522,7 @@ describe('Routes /product', () => {
         });
       });
 
-      it('return 400 HTTP status code when `price` isn\'t a positive number ', (done) => {
+      it('return 400 HTTP status code when `unitPrice` isn\'t a positive number ', (done) => {
         const options = {
           method: 'POST',
           url: '/item-order',
@@ -532,7 +530,7 @@ describe('Routes /product', () => {
           payload: {
             product: product.id,
             order: order.id,
-            price: -1,
+            unitPrice: -1,
             quantity: 1
           }
         };
@@ -541,7 +539,7 @@ describe('Routes /product', () => {
           expect(response).to.have.property('result');
           expect(response.result).to.have.property('statusCode', 400);
           expect(response.result).to.have.property('error', 'Bad Request');
-          expect(response.result).to.have.property('message', 'child "price" fails because ["price" must be a positive number]');
+          expect(response.result).to.have.property('message', 'child "unitPrice" fails because ["unitPrice" must be a positive number]');
           done();
         });
       });
@@ -554,7 +552,7 @@ describe('Routes /product', () => {
           payload: {
             product: product.id,
             order: order.id,
-            price: 1,
+            unitPrice: 1,
             quantity: -1
           }
         };
@@ -576,7 +574,7 @@ describe('Routes /product', () => {
           payload: {
             product: product.id,
             order: order.id,
-            price: 1,
+            unitPrice: 1,
             quantity: 1
           }
         };
@@ -585,7 +583,7 @@ describe('Routes /product', () => {
           expect(response).to.have.property('result');
           expect(response.result).to.have.property('product', product.id);
           expect(response.result).to.have.property('order', order.id);
-          expect(response.result).to.have.property('price', 1);
+          expect(response.result).to.have.property('unitPrice', 1);
           expect(response.result).to.have.property('quantity', 1);
           done();
         });
@@ -605,7 +603,7 @@ describe('Routes /product', () => {
           payload: {
             product: product.id,
             order: order.id,
-            price: 1,
+            unitPrice: 1,
             quantity: 1
           }
         };
@@ -625,7 +623,7 @@ describe('Routes /product', () => {
         payload: {
           product: 'AAA',
           order: order.id,
-          price: 1,
+          unitPrice: 1,
           quantity: 1
         }
       };
@@ -647,7 +645,7 @@ describe('Routes /product', () => {
         payload: {
           product: product.id,
           order: 'AAA',
-          price: 1,
+          unitPrice: 1,
           quantity: 1
         }
       };
@@ -661,7 +659,7 @@ describe('Routes /product', () => {
       });
     });
 
-    it('returns 400 HTTP status code  when `price` isn\'t a number', (done) => {
+    it('returns 400 HTTP status code  when `unitPrice` isn\'t a number', (done) => {
       const options = {
         method: 'PUT',
         url: '/item-order/' + order.id + '/' + itemOrder.id,
@@ -669,7 +667,7 @@ describe('Routes /product', () => {
         payload: {
           product: product.id,
           order: order.id,
-          price: 'AAA',
+          unitPrice: 'AAA',
           quantity: 1
         }
       };
@@ -678,7 +676,7 @@ describe('Routes /product', () => {
         expect(response).to.have.property('result');
         expect(response.result).to.have.property('statusCode', 400);
         expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "price" fails because ["price" must be a number]');
+        expect(response.result).to.have.property('message', 'child "unitPrice" fails because ["unitPrice" must be a number]');
         done();
       });
     });
@@ -691,7 +689,7 @@ describe('Routes /product', () => {
         payload: {
           product: product.id,
           order: order.id,
-          price: 1,
+          unitPrice: 1,
           quantity: 'AAA'
         }
       };
@@ -713,7 +711,7 @@ describe('Routes /product', () => {
         payload: {
           product: -1,
           order: order.id,
-          price: 1,
+          unitPrice: 1,
           quantity: 1
         }
       };
@@ -735,7 +733,7 @@ describe('Routes /product', () => {
         payload: {
           product: product.id,
           order: -1,
-          price: 1,
+          unitPrice: 1,
           quantity: 1
         }
       };
@@ -749,7 +747,7 @@ describe('Routes /product', () => {
       });
     });
 
-    it('return 400 HTTP status code when `price` isn\'t a positive number ', (done) => {
+    it('return 400 HTTP status code when `unitPrice` isn\'t a positive number ', (done) => {
       const options = {
         method: 'PUT',
         url: '/item-order/' + order.id + '/' + itemOrder.id,
@@ -757,7 +755,7 @@ describe('Routes /product', () => {
         payload: {
           product: product.id,
           order: order.id,
-          price: -1,
+          unitPrice: -1,
           quantity: 1
         }
       };
@@ -766,7 +764,7 @@ describe('Routes /product', () => {
         expect(response).to.have.property('result');
         expect(response.result).to.have.property('statusCode', 400);
         expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "price" fails because ["price" must be a positive number]');
+        expect(response.result).to.have.property('message', 'child "unitPrice" fails because ["unitPrice" must be a positive number]');
         done();
       });
     });
@@ -779,7 +777,7 @@ describe('Routes /product', () => {
         payload: {
           product: product.id,
           order: order.id,
-          price: 1,
+          unitPrice: 1,
           quantity: -1
         }
       };
@@ -801,7 +799,7 @@ describe('Routes /product', () => {
         payload: {
           product: product.id,
           order: order.id,
-          price: 2,
+          unitPrice: 2,
           quantity: 2
         }
       };
@@ -810,7 +808,7 @@ describe('Routes /product', () => {
         expect(response).to.have.property('result');
         expect(response.result).to.have.property('product', product.id);
         expect(response.result).to.have.property('order', order.id);
-        expect(response.result).to.have.property('price', 2);
+        expect(response.result).to.have.property('unitPrice', 2);
         expect(response.result).to.have.property('quantity', 2);
         done();
       });
@@ -829,7 +827,7 @@ describe('Routes /product', () => {
           payload: {
             product: product.id,
             order: order.id,
-            price: 2,
+            unitPrice: 2,
             quantity: 2
           }
         };

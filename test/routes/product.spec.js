@@ -68,7 +68,7 @@ describe('Routes /product', () => {
           options.payload = {
             reference: '00' + i,
             description: 'description',
-            unit: i + 1,
+            unitPrice: i + 1,
             category: category.id
           };
           reqs.push(server.inject(options));
@@ -87,12 +87,14 @@ describe('Routes /product', () => {
         url: '/product',
         headers: {'Authorization': 'Bearer ' + userInfo}
       };
+      console.log('aaaaaaaaaaaaaa');
       server.inject(options, (response) => {
+        console.log(response.result);
         expect(response).to.have.property('result');
 
         expect(response.result.data).to.contain.a.thing.with.property('reference');
         expect(response.result.data).to.contain.a.thing.with.property('description');
-        expect(response.result.data).to.contain.a.thing.with.property('unit');
+        expect(response.result.data).to.contain.a.thing.with.property('unitPrice');
         expect(response.result.data).to.contain.a.thing.with.property('category');
         expect(response.result).to.have.property('count', 5);
         done();
@@ -112,7 +114,7 @@ describe('Routes /product', () => {
           payload: {
             reference: '001',
             description: 'description',
-            unit: 2,
+            unitPrice: 2,
             category: category.id
           }
         };
@@ -159,7 +161,7 @@ describe('Routes /product', () => {
           expect(response.result).to.have.property('id', product.id);
           expect(response.result).to.have.property('reference', product.reference);
           expect(response.result).to.have.property('description', product.description);
-          expect(response.result).to.have.property('unit', product.unit);
+          expect(response.result).to.have.property('unitPrice', product.unitPrice);
           expect(response.result.Category).to.have.property('id', product.category);
           done();
         });
@@ -242,7 +244,7 @@ describe('Routes /product', () => {
         headers: {'Authorization': 'Bearer ' + userInfo},
         payload: {
           description: 'description',
-          unit: 2,
+          unitPrice: 2,
           category: category.id
         }
       };
@@ -263,7 +265,7 @@ describe('Routes /product', () => {
         headers: {'Authorization': 'Bearer ' + userInfo},
         payload: {
           reference: '001',
-          unit: 2,
+          unitPrice: 2,
           category: category.id
         }
       };
@@ -277,7 +279,7 @@ describe('Routes /product', () => {
       });
     });
 
-    it('returns 400 HTTP status code  when no `unit` is send', (done) => {
+    it('returns 400 HTTP status code  when no `unitPrice` is send', (done) => {
       const options = {
         method: 'POST',
         url: '/product',
@@ -293,7 +295,7 @@ describe('Routes /product', () => {
         expect(response).to.have.property('result');
         expect(response.result).to.have.property('statusCode', 400);
         expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "unit" fails because ["unit" is required]');
+        expect(response.result).to.have.property('message', 'child "unitPrice" fails because ["unitPrice" is required]');
         done();
       });
     });
@@ -306,7 +308,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '001',
           description: 'description',
-          unit: 2
+          unitPrice: 2
         }
       };
       server.inject(options, (response) => {
@@ -327,7 +329,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '',
           description: 'description',
-          unit: 2,
+          unitPrice: 2,
           category: category.id
         }
       };
@@ -349,7 +351,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '001',
           description: '',
-          unit: 2,
+          unitPrice: 2,
           category: category.id
         }
       };
@@ -363,7 +365,7 @@ describe('Routes /product', () => {
       });
     });
 
-    it('return 400 HTTP status code when `unit` isn\'t a positive number ', (done) => {
+    it('return 400 HTTP status code when `unitPrice` isn\'t a positive number ', (done) => {
       const options = {
         method: 'POST',
         url: '/product',
@@ -371,7 +373,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '001',
           description: 'description',
-          unit: 0,
+          unitPrice: 0,
           category: category.id
         }
       };
@@ -380,7 +382,7 @@ describe('Routes /product', () => {
         expect(response).to.have.property('result');
         expect(response.result).to.have.property('statusCode', 400);
         expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "unit" fails because ["unit" must be a positive number]');
+        expect(response.result).to.have.property('message', 'child "unitPrice" fails because ["unitPrice" must be a positive number]');
         done();
       });
     });
@@ -393,7 +395,7 @@ describe('Routes /product', () => {
         payload: {
           reference: 0,
           description: 'description',
-          unit: 1,
+          unitPrice: 1,
           category: category.id
         }
       };
@@ -415,7 +417,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '001',
           description: 0,
-          unit: 1,
+          unitPrice: 1,
           category: category.id
         }
       };
@@ -437,7 +439,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '001',
           description: 'reference',
-          unit: 1,
+          unitPrice: 1,
           category: 'category'
         }
       };
@@ -459,7 +461,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '001',
           description: 'description',
-          unit: 2,
+          unitPrice: 2,
           category: category.id
         }
       };
@@ -468,7 +470,7 @@ describe('Routes /product', () => {
         expect(response).to.have.property('result');
         expect(response.result).to.have.property('reference', '001');
         expect(response.result).to.have.property('description', 'description');
-        expect(response.result).to.have.property('unit', 2);
+        expect(response.result).to.have.property('unitPrice', 2);
         expect(response.result).to.have.property('category', category.id);
         done();
       });
@@ -487,7 +489,7 @@ describe('Routes /product', () => {
           payload: {
             reference: '001',
             description: 'description',
-            unit: 2,
+            unitPrice: 2,
             category: category.id
           }
         };
@@ -507,7 +509,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '',
           description: 'description',
-          unit: 2,
+          unitPrice: 2,
           category: category.id
         }
       };
@@ -529,7 +531,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '001',
           description: '',
-          unit: 2,
+          unitPrice: 2,
           category: category.id
         }
       };
@@ -543,7 +545,7 @@ describe('Routes /product', () => {
       });
     });
 
-    it('return 400 HTTP status code when `unit` isn\'t a positive number ', (done) => {
+    it('return 400 HTTP status code when `unitPrice` isn\'t a positive number ', (done) => {
       const options = {
         method: 'PUT',
         url: '/product/' + product.id,
@@ -551,7 +553,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '001',
           description: 'description',
-          unit: 0,
+          unitPrice: 0,
           category: category.id
         }
       };
@@ -560,7 +562,7 @@ describe('Routes /product', () => {
         expect(response).to.have.property('result');
         expect(response.result).to.have.property('statusCode', 400);
         expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "unit" fails because ["unit" must be a positive number]');
+        expect(response.result).to.have.property('message', 'child "unitPrice" fails because ["unitPrice" must be a positive number]');
         done();
       });
     });
@@ -573,7 +575,7 @@ describe('Routes /product', () => {
         payload: {
           reference: 0,
           description: 'description',
-          unit: 1,
+          unitPrice: 1,
           category: category.id
         }
       };
@@ -595,7 +597,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '001',
           description: 0,
-          unit: 1,
+          unitPrice: 1,
           category: category.id
         }
       };
@@ -617,7 +619,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '001',
           description: 'reference',
-          unit: 1,
+          unitPrice: 1,
           category: 'category'
         }
       };
@@ -638,7 +640,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '001',
           description: 'description',
-          unit: 2,
+          unitPrice: 2,
           category: category.id
         },
         headers: {'Authorization': 'Bearer ' + userInfo}
@@ -649,7 +651,7 @@ describe('Routes /product', () => {
         expect(response.result).to.have.property('id', product.id);
         expect(response.result).to.have.property('reference', '001');
         expect(response.result).to.have.property('description', 'description');
-        expect(response.result).to.have.property('unit', 2);
+        expect(response.result).to.have.property('unitPrice', 2);
         expect(response.result).to.have.property('category', category.id);
         done();
       });
@@ -668,7 +670,7 @@ describe('Routes /product', () => {
           payload: {
             reference: '001',
             description: 'description',
-            unit: 2,
+            unitPrice: 2,
             category: category.id
           }
         };

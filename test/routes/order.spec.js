@@ -76,8 +76,6 @@ describe('Routes /order', () => {
             code: '0000' + i,
             emission: new Date(),
             delivery: new Date(),
-            price: i + 1,
-            discount: i + 1,
             client: client.id
           };
           reqs.push(server.inject(options));
@@ -102,8 +100,6 @@ describe('Routes /order', () => {
         expect(response.result.data).to.contain.a.thing.with.property('code');
         expect(response.result.data).to.contain.a.thing.with.property('emission');
         expect(response.result.data).to.contain.a.thing.with.property('delivery');
-        expect(response.result.data).to.contain.a.thing.with.property('price');
-        expect(response.result.data).to.contain.a.thing.with.property('discount');
         expect(response.result.data).to.contain.a.thing.with.property('client');
         expect(response.result).to.have.property('count', 5);
         done();
@@ -124,8 +120,6 @@ describe('Routes /order', () => {
             code: '00001',
             emission: new Date(2016, 1, 1),
             delivery: new Date(2016, 1, 10),
-            price: 1,
-            discount: 1,
             client: client.id
           }
         };
@@ -171,8 +165,6 @@ describe('Routes /order', () => {
         server.inject(options, (response) => {
           expect(response.result).to.have.property('id', order.id);
           expect(response.result).to.have.property('code', order.code);
-          expect(response.result).to.have.property('price', order.price);
-          expect(response.result).to.have.property('discount', order.discount);
           expect(response.result.emission).to.equalDate(order.emission);
           expect(response.result.delivery).to.equalDate(order.delivery);
           expect(response.result.Client).to.have.property('id', order.client);
@@ -258,8 +250,6 @@ describe('Routes /order', () => {
         payload: {
           emission: new Date(2016, 1, 1),
           delivery: new Date(2016, 1, 10),
-          price: 1,
-          discount: 1,
           client: client.id
         }
       };
@@ -281,8 +271,6 @@ describe('Routes /order', () => {
         payload: {
           code: '00001',
           delivery: new Date(2016, 1, 10),
-          price: 1,
-          discount: 1,
           client: client.id
         }
       };
@@ -304,8 +292,6 @@ describe('Routes /order', () => {
         payload: {
           code: '00001',
           emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: 1,
           client: client.id
         }
       };
@@ -319,52 +305,6 @@ describe('Routes /order', () => {
       });
     });
 
-    it('returns 400 HTTP status code  when no `price` is send', (done) => {
-      const options = {
-        method: 'POST',
-        url: '/order',
-        headers: {'Authorization': 'Bearer ' + userInfo},
-        payload: {
-          code: '00001',
-          delivery: new Date(2016, 1, 10),
-          emission: new Date(2016, 1, 10),
-          discount: 1,
-          client: client.id
-        }
-      };
-      server.inject(options, (response) => {
-        expect(response).to.have.property('statusCode', 400);
-        expect(response).to.have.property('result');
-        expect(response.result).to.have.property('statusCode', 400);
-        expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "price" fails because ["price" is required]');
-        done();
-      });
-    });
-
-    it('returns 400 HTTP status code  when no `discount` is send', (done) => {
-      const options = {
-        method: 'POST',
-        url: '/order',
-        headers: {'Authorization': 'Bearer ' + userInfo},
-        payload: {
-          code: '00001',
-          delivery: new Date(2016, 1, 10),
-          emission: new Date(2016, 1, 10),
-          price: 1,
-          client: client.id
-        }
-      };
-      server.inject(options, (response) => {
-        expect(response).to.have.property('statusCode', 400);
-        expect(response).to.have.property('result');
-        expect(response.result).to.have.property('statusCode', 400);
-        expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "discount" fails because ["discount" is required]');
-        done();
-      });
-    });
-
     it('returns 400 HTTP status code  when no `client` is send', (done) => {
       const options = {
         method: 'POST',
@@ -373,9 +313,7 @@ describe('Routes /order', () => {
         payload: {
           code: '00001',
           delivery: new Date(2016, 1, 10),
-          emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: 1
+          emission: new Date(2016, 1, 10)
         }
       };
       server.inject(options, (response) => {
@@ -397,8 +335,6 @@ describe('Routes /order', () => {
           code: '',
           delivery: new Date(2016, 1, 10),
           emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: 1,
           client: client.id
         }
       };
@@ -421,8 +357,6 @@ describe('Routes /order', () => {
           code: 0,
           delivery: new Date(2016, 1, 10),
           emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: 1,
           client: client.id
         }
       };
@@ -445,8 +379,6 @@ describe('Routes /order', () => {
           code: '0123456',
           delivery: new Date(2016, 1, 10),
           emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: 1,
           client: client.id
         }
       };
@@ -460,102 +392,6 @@ describe('Routes /order', () => {
       });
     });
 
-    it('returns 400 HTTP status code  when `price` isn\'t a number', (done) => {
-      const options = {
-        method: 'POST',
-        url: '/order',
-        headers: {'Authorization': 'Bearer ' + userInfo},
-        payload: {
-          code: '00001',
-          delivery: new Date(2016, 1, 10),
-          emission: new Date(2016, 1, 10),
-          price: 'AAA',
-          discount: 1,
-          client: client.id
-        }
-      };
-      server.inject(options, (response) => {
-        expect(response).to.have.property('statusCode', 400);
-        expect(response).to.have.property('result');
-        expect(response.result).to.have.property('statusCode', 400);
-        expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "price" fails because ["price" must be a number]');
-        done();
-      });
-    });
-
-    it('return 400 HTTP status code when `price` isn\'t a positive number ', (done) => {
-      const options = {
-        method: 'POST',
-        url: '/order',
-        headers: {'Authorization': 'Bearer ' + userInfo},
-        payload: {
-          code: '00001',
-          delivery: new Date(2016, 1, 10),
-          emission: new Date(2016, 1, 10),
-          price: -1,
-          discount: 1,
-          client: client.id
-        }
-      };
-      server.inject(options, (response) => {
-        expect(response).to.have.property('statusCode', 400);
-        expect(response).to.have.property('result');
-        expect(response.result).to.have.property('statusCode', 400);
-        expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "price" fails because ["price" must be a positive number]');
-        done();
-      });
-    });
-
-    it('returns 400 HTTP status code  when `discount` isn\'t a number', (done) => {
-      const options = {
-        method: 'POST',
-        url: '/order',
-        headers: {'Authorization': 'Bearer ' + userInfo},
-        payload: {
-          code: '00001',
-          delivery: new Date(2016, 1, 10),
-          emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: 'AAA',
-          client: client.id
-        }
-      };
-      server.inject(options, (response) => {
-        expect(response).to.have.property('statusCode', 400);
-        expect(response).to.have.property('result');
-        expect(response.result).to.have.property('statusCode', 400);
-        expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "discount" fails because ["discount" must be a number]');
-        done();
-      });
-    });
-
-    it('return 400 HTTP status code when `discount` isn\'t a positive number ', (done) => {
-      const options = {
-        method: 'POST',
-        url: '/order',
-        headers: {'Authorization': 'Bearer ' + userInfo},
-        payload: {
-          code: '00001',
-          delivery: new Date(2016, 1, 10),
-          emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: -1,
-          client: client.id
-        }
-      };
-      server.inject(options, (response) => {
-        expect(response).to.have.property('statusCode', 400);
-        expect(response).to.have.property('result');
-        expect(response.result).to.have.property('statusCode', 400);
-        expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "discount" fails because ["discount" must be a positive number]');
-        done();
-      });
-    });
-
     it('returns 400 HTTP status code  when `client` isn\'t a number', (done) => {
       const options = {
         method: 'POST',
@@ -565,8 +401,6 @@ describe('Routes /order', () => {
           code: '00001',
           delivery: new Date(2016, 1, 10),
           emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: 1,
           client: 'AAA'
         }
       };
@@ -589,8 +423,6 @@ describe('Routes /order', () => {
           code: '00001',
           emission: new Date(2016, 1, 1),
           delivery: new Date(2016, 1, 10),
-          price: 1,
-          discount: 1,
           client: client.id
         }
       };
@@ -598,8 +430,6 @@ describe('Routes /order', () => {
         expect(response).to.have.property('statusCode', 201);
         expect(response).to.have.property('result');
         expect(response.result).to.have.property('code', '00001');
-        expect(response.result).to.have.property('price', 1);
-        expect(response.result).to.have.property('discount', 1);
         expect(response.result).to.have.property('client', client.id);
         expect(response.result.emission).to.equalDate(new Date(2016, 1, 1));
         expect(response.result.delivery).to.equalDate(new Date(2016, 1, 10));
@@ -621,8 +451,6 @@ describe('Routes /order', () => {
             code: '00001',
             emission: new Date(2016, 1, 1),
             delivery: new Date(2016, 1, 10),
-            price: 1,
-            discount: 1,
             client: client.id
           }
         };
@@ -659,8 +487,6 @@ describe('Routes /order', () => {
           code: '',
           delivery: new Date(2016, 1, 10),
           emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: 1,
           client: client.id
         }
       };
@@ -683,8 +509,6 @@ describe('Routes /order', () => {
           code: 0,
           delivery: new Date(2016, 1, 10),
           emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: 1,
           client: client.id
         }
       };
@@ -707,8 +531,6 @@ describe('Routes /order', () => {
           code: '0123456',
           delivery: new Date(2016, 1, 10),
           emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: 1,
           client: client.id
         }
       };
@@ -722,102 +544,6 @@ describe('Routes /order', () => {
       });
     });
 
-    it('returns 400 HTTP status code  when `price` isn\'t a number', (done) => {
-      const options = {
-        method: 'PUT',
-        url: '/order/' + order.id,
-        headers: {'Authorization': 'Bearer ' + userInfo},
-        payload: {
-          code: '00001',
-          delivery: new Date(2016, 1, 10),
-          emission: new Date(2016, 1, 10),
-          price: 'AAA',
-          discount: 1,
-          client: client.id
-        }
-      };
-      server.inject(options, (response) => {
-        expect(response).to.have.property('statusCode', 400);
-        expect(response).to.have.property('result');
-        expect(response.result).to.have.property('statusCode', 400);
-        expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "price" fails because ["price" must be a number]');
-        done();
-      });
-    });
-
-    it('return 400 HTTP status code when `price` isn\'t a positive number ', (done) => {
-      const options = {
-        method: 'PUT',
-        url: '/order/' + order.id,
-        headers: {'Authorization': 'Bearer ' + userInfo},
-        payload: {
-          code: '00001',
-          delivery: new Date(2016, 1, 10),
-          emission: new Date(2016, 1, 10),
-          price: -1,
-          discount: 1,
-          client: client.id
-        }
-      };
-      server.inject(options, (response) => {
-        expect(response).to.have.property('statusCode', 400);
-        expect(response).to.have.property('result');
-        expect(response.result).to.have.property('statusCode', 400);
-        expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "price" fails because ["price" must be a positive number]');
-        done();
-      });
-    });
-
-    it('returns 400 HTTP status code  when `discount` isn\'t a number', (done) => {
-      const options = {
-        method: 'PUT',
-        url: '/order/' + order.id,
-        headers: {'Authorization': 'Bearer ' + userInfo},
-        payload: {
-          code: '00001',
-          delivery: new Date(2016, 1, 10),
-          emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: 'AAA',
-          client: client.id
-        }
-      };
-      server.inject(options, (response) => {
-        expect(response).to.have.property('statusCode', 400);
-        expect(response).to.have.property('result');
-        expect(response.result).to.have.property('statusCode', 400);
-        expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "discount" fails because ["discount" must be a number]');
-        done();
-      });
-    });
-
-    it('return 400 HTTP status code when `discount` isn\'t a positive number ', (done) => {
-      const options = {
-        method: 'PUT',
-        url: '/order/' + order.id,
-        headers: {'Authorization': 'Bearer ' + userInfo},
-        payload: {
-          code: '00001',
-          delivery: new Date(2016, 1, 10),
-          emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: -1,
-          client: client.id
-        }
-      };
-      server.inject(options, (response) => {
-        expect(response).to.have.property('statusCode', 400);
-        expect(response).to.have.property('result');
-        expect(response.result).to.have.property('statusCode', 400);
-        expect(response.result).to.have.property('error', 'Bad Request');
-        expect(response.result).to.have.property('message', 'child "discount" fails because ["discount" must be a positive number]');
-        done();
-      });
-    });
-
     it('returns 400 HTTP status code  when `client` isn\'t a number', (done) => {
       const options = {
         method: 'PUT',
@@ -827,8 +553,6 @@ describe('Routes /order', () => {
           code: '00001',
           delivery: new Date(2016, 1, 10),
           emission: new Date(2016, 1, 10),
-          price: 1,
-          discount: 1,
           client: 'AAA'
         }
       };
@@ -856,8 +580,6 @@ describe('Routes /order', () => {
             code: '00001',
             emission: new Date(),
             delivery: new Date(),
-            price: 1,
-            discount: 1,
             client: client.id
           }
         };
