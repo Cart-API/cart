@@ -21,7 +21,7 @@ const schema = {
   description: Joi
     .string()
     .default(''),
-  unit: Joi
+  unitPrice: Joi
     .number()
     .precision(2)
     .positive(),
@@ -65,8 +65,8 @@ function create () {
       description: schema
         .description
         .required(),
-      unit: schema
-        .unit
+      unitPrice: schema
+        .unitPrice
         .required(),
       category: schema
         .category
@@ -91,8 +91,8 @@ function update () {
       description: schema
         .description
         .optional(),
-      unit: schema
-        .unit
+      unitPrice: schema
+        .unitPrice
         .optional(),
       category: schema
         .category

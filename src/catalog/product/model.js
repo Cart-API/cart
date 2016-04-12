@@ -11,10 +11,11 @@ module.exports = (sequelize, DataType) => {
       allowNull: false,
       defaultValue: ''
     },
-    unit: {
+    unitPrice: {
       type: DataType.DECIMAL(14, 2),
       allowNull: false,
-      defaultValue: 0.00
+      defaultValue: 0.00,
+      field: 'unit_price'
     },
     category: {
       type: DataType.INTEGER,

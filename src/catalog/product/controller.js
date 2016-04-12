@@ -19,7 +19,7 @@ module.exports = ProductController;
 // [GET] /category
 function list (request, reply) {
   let options = {
-    attributes: ['id', 'reference', 'description', 'unit'],
+    attributes: ['id', 'reference', 'description', 'unitPrice'],
     order: 'description',
     offset: request.offset(),
     limit: request.limit,
@@ -58,7 +58,7 @@ function read (request, reply) {
     method: ['user', request.auth.credentials.id]
   })
   .findOne({
-    attributes: ['id', 'reference', 'description', 'unit'],
+    attributes: ['id', 'reference', 'description', 'unitPrice'],
     include: [{
       model: this.database.Category,
       attributes: ['id', 'description']
