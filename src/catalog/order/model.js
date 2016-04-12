@@ -24,16 +24,6 @@ module.exports = (sequelize, DataType) => {
       },
       field: 'client'
     },
-    price: {
-      type: DataType.DECIMAL(14, 2),
-      allowNull: false,
-      defaultValue: 0.00
-    },
-    discount: {
-      type: DataType.DECIMAL(14, 2),
-      allowNull: false,
-      defaultValue: 0.00
-    },
     user: {
       type: DataType.INTEGER,
       allowNull: true,

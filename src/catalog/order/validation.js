@@ -21,14 +21,6 @@ const schema = {
     .date(),
   delivery: Joi
     .date(),
-  price: Joi
-    .number()
-    .precision(2)
-    .positive(),
-  discount: Joi
-    .number()
-    .precision(2)
-    .positive(),
   client: Joi
     .number()
     .integer()
@@ -72,12 +64,6 @@ function create () {
       delivery: schema
         .delivery
         .required(),
-      price: schema
-        .price
-        .required(),
-      discount: schema
-        .discount
-        .required(),
       client: schema
         .client
         .required()
@@ -103,12 +89,6 @@ function update () {
         .optional(),
       delivery: schema
         .delivery
-        .optional(),
-      price: schema
-        .price
-        .optional(),
-      discount: schema
-        .discount
         .optional(),
       client: schema
         .client

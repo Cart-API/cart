@@ -19,7 +19,7 @@ module.exports = OrderController;
 // [GET] /order
 function list (request, reply) {
   let options = {
-    attributes: ['id', 'code', 'emission', 'delivery', 'price', 'discount'],
+    attributes: ['id', 'code', 'emission', 'delivery'],
     order: 'code',
     include: [{
       model: this.database.Client,
@@ -56,7 +56,7 @@ function read (request, reply) {
     method: ['user', request.auth.credentials.id]
   })
   .findOne({
-    attributes: ['id', 'code', 'emission', 'delivery', 'price', 'discount'],
+    attributes: ['id', 'code', 'emission', 'delivery'],
     include: [{
       model: this.database.Client,
       attributes: ['id', 'name']
