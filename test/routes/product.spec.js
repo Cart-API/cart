@@ -87,9 +87,7 @@ describe('Routes /product', () => {
         url: '/product',
         headers: {'Authorization': 'Bearer ' + userInfo}
       };
-      console.log('aaaaaaaaaaaaaa');
       server.inject(options, (response) => {
-        console.log(response.result);
         expect(response).to.have.property('result');
 
         expect(response.result.data).to.contain.a.thing.with.property('reference');
