@@ -22,7 +22,7 @@ const schema = {
     .number()
     .integer()
     .positive(),
-  price: Joi
+  unitPrice: Joi
     .number()
     .precision(2)
     .positive(),
@@ -79,8 +79,8 @@ function create () {
       product: schema
         .product
         .required(),
-      price: schema
-        .price
+      unitPrice: schema
+        .unitPrice
         .required(),
       quantity: schema
         .quantity
@@ -110,8 +110,8 @@ function update () {
       product: schema
         .product
         .optional(),
-      price: schema
-        .price
+      unitPrice: schema
+        .unitPrice
         .optional(),
       quantity: schema
         .quantity

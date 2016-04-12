@@ -25,7 +25,7 @@ function list (request, reply) {
     method: ['order', order]
   })
   .findAndCountAll({
-    attributes: ['id', 'price', 'quantity'],
+    attributes: ['id', 'unitPrice', 'quantity'],
     include: [{
       model: this.database.Order,
       attributes: ['id', 'code']
@@ -56,7 +56,7 @@ function read (request, reply) {
     method: ['order', order]
   })
   .findOne({
-    attributes: ['id', 'price', 'quantity'],
+    attributes: ['id', 'unitPrice', 'quantity'],
     include: [{
       model: this.database.Order,
       attributes: ['id', 'code']

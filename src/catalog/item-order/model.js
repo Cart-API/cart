@@ -18,10 +18,11 @@ module.exports = (sequelize, DataType) => {
         key: 'id'
       }
     },
-    price: {
+    unitPrice: {
       type: DataType.DECIMAL(14, 2),
       allowNull: false,
-      defaultValue: 0.00
+      defaultValue: 0.00,
+      field: 'unit_price'
     },
     quantity: {
       type: DataType.INTEGER(),
@@ -51,6 +52,15 @@ module.exports = (sequelize, DataType) => {
             order: value
           }
         };
+      }
+    },
+
+    getterMethods: {
+      value: function () {
+        let unitPrice = this.unitPrice || 0;
+        let quantity = this.quantity || 1;
+
+        return unitPrice * quantity;
       }
     }
   });
