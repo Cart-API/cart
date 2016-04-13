@@ -56,6 +56,20 @@ module.exports = (sequelize, DataType) => {
           }
         };
       }
+    },
+
+    getterMethods: {
+      total: function () {
+        sequelize.query('SELECT sum(unit_price * quantity) FROM itens_orders WHERE "order" = :order', { 
+            replacements: { 
+              order: this.id 
+            }, 
+          type: sequelize.QueryTypes.SELECT
+        })
+        .then((value) => {
+          return value[0];
+        });
+      }
     }
   });
   return Order;
