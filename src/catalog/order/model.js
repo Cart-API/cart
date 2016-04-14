@@ -1,5 +1,7 @@
 'use strict';
 
+const async = require('async');
+
 module.exports = (sequelize, DataType) => {
   const Order = sequelize.define('Order', {
     code: {
@@ -31,6 +33,9 @@ module.exports = (sequelize, DataType) => {
         model: 'users',
         key: 'id'
       }
+    },
+    priceTotal: {
+      type: DataType.VIRTUAL
     }
   }, {
     createdAt: 'created_at',
@@ -58,19 +63,48 @@ module.exports = (sequelize, DataType) => {
       }
     },
 
-    getterMethods: {
-      total: function () {
-        sequelize.query('SELECT sum(unit_price * quantity) FROM itens_orders WHERE "order" = :order', {
-          replacements: {
-            order: this.id
-          },
-          type: sequelize.QueryTypes.SELECT
-        })
-        .then((value) => {
-          return value[0];
-        });
+    hooks: {
+      afterFind: function (order, options, fn) {
+        if (!order) {
+          return fn(null);
+        }
+
+        if (Array.isArray(order)) {
+          async.map(order, getPriceTotal, (err, result) => {
+            if (err) {
+              return fn(null, order);
+            }
+            return fn(null, result);
+          });
+        } else {
+          sequelize.query('SELECT sum(unit_price * quantity) FROM itens_orders WHERE "order" = :order', {
+            replacements: {
+              order: order.id
+            },
+            type: sequelize.QueryTypes.SELECT
+          })
+          .then((value) => {
+            order.priceTotal = value[0].sum;
+            return fn(null, order);
+          });
+        }
       }
     }
   });
+
+  function getPriceTotal (order, callback) {
+    sequelize.query('SELECT sum(unit_price * quantity) FROM itens_orders WHERE "order" = :order', {
+      replacements: {
+        order: order.id
+      },
+      type: sequelize.QueryTypes.SELECT
+    })
+    .then((value) => {
+      order.priceTotal = value[0].sum;
+
+      callback(null, order);
+    });
+  }
+
   return Order;
 };

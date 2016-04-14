@@ -28,6 +28,15 @@ module.exports = (sequelize, DataType) => {
       type: DataType.INTEGER(),
       allowNull: false,
       defaultValue: 0
+    },
+    value: {
+      type: DataType.VIRTUAL,
+      get: function () {
+        let unitPrice = this.unitPrice || 0;
+        let quantity = this.quantity || 1;
+
+        return unitPrice * quantity;
+      }
     }
   }, {
     createdAt: 'created_at',
@@ -52,15 +61,6 @@ module.exports = (sequelize, DataType) => {
             order: value
           }
         };
-      }
-    },
-
-    getterMethods: {
-      value: function () {
-        let unitPrice = this.unitPrice || 0;
-        let quantity = this.quantity || 1;
-
-        return unitPrice * quantity;
       }
     }
   });
