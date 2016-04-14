@@ -28,8 +28,6 @@
     "code": "001",
     "emission": "01/01/2016",
     "delivery": "01/01/2016",
-    "price": 100,
-    "discount": 10,
     "client": 1
 }
 
@@ -38,7 +36,7 @@
 {
     "reference": "001",
     "description": "Product",
-    "unit": 100,
+    "unitPrice": 100,
     "category": 1
 }
 
@@ -47,6 +45,6 @@
 {
     "order": 1,
     "product": 1,
-    "price": 10,
+    "unitPrice": 10,
     "quantity": 20
 }
