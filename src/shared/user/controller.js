@@ -46,7 +46,7 @@ function create (request, reply) {
 
   this.model.create(payload)
   .then((user) => reply({ token: getToken(user.id) }).code(201))
-  .catch((err) => reply.badImplementation(err.message));
+  .catch((err) => reply.badImplementationCustom(err));
 }
 
 // [POST] /user/login
@@ -78,7 +78,7 @@ function update (request, reply) {
   this.model.findById(id)
   .then((user) => user.update(payload))
   .then((user) => reply(user))
-  .catch((err) => reply.badImplementation(err.message));
+  .catch((err) => reply.badImplementationCustom(err));
 }
 
 // [DELETE] /user

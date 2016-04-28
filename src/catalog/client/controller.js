@@ -71,7 +71,7 @@ function create (request, reply) {
 
   this.model.create(payload)
   .then((client) => reply(client).code(201))
-  .catch((err) => reply.badImplementation(err.message));
+  .catch((err) => reply.badImplementationCustom(err));
 }
 
 // [PUT] /client
@@ -93,7 +93,7 @@ function update (request, reply) {
     return client.update(payload, {where: {id: id}});
   })
   .then(client => reply(client))
-  .catch((err) => reply.badImplementation(err.message));
+  .catch((err) => reply.badImplementationCustom(err));
 }
 
 // [DELETE] /client

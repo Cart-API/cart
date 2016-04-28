@@ -80,7 +80,7 @@ function create (request, reply) {
 
   this.model.create(payload)
   .then((category) => reply(category).code(201))
-  .catch((err) => reply.badImplementation(err.message));
+  .catch((err) => reply.badImplementationCustom(err));
 }
 
 // [PUT] /category
@@ -102,7 +102,7 @@ function update (request, reply) {
     return category.update(payload, {where: {id: id}});
   })
   .then(category => reply(category))
-  .catch((err) => reply.badImplementation(err.message));
+  .catch((err) => reply.badImplementationCustom(err));
 }
 
 // [DELETE] /category

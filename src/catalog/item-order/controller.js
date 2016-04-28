@@ -82,7 +82,7 @@ function create (request, reply) {
 
   this.model.create(payload)
   .then((order) => reply(order).code(201))
-  .catch((err) => reply.badImplementation(err.message));
+  .catch((err) => reply.badImplementationCustom(err));
 }
 
 // [PUT] /order
@@ -105,7 +105,7 @@ function update (request, reply) {
     return order.update(payload, {where: {id: id}});
   })
   .then(order => reply(order))
-  .catch((err) => reply.badImplementation(err.message));
+  .catch((err) => reply.badImplementationCustom(err));
 }
 
 // [DELETE] /order
