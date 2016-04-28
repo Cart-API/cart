@@ -4,8 +4,9 @@ const Boom = require('boom');
 
 exports.register = (server, options, next) => {
   const badImplementationCustom = function (err) {
-  	if (!err)
-  		return this.response(Boom.badImplementation('method not implemented'));
+    if (!err) {
+      return this.response(Boom.badImplementation('method not implemented'));
+    }
 
     switch (err.name) {
       case 'SequelizeForeignKeyConstraintError':
