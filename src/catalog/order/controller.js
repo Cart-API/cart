@@ -119,7 +119,7 @@ function destroy (request, reply) {
       return reply.notFound();
     }
     return order.destroy().then(() => reply());
-  }).catch((err) => reply.badImplementation(err.message));
+  }).catch((err) => reply.badImplementationCustom(err));
 }
 
 function search (search) {

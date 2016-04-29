@@ -88,7 +88,7 @@ function destroy (request, reply) {
   this.model.findById(id)
   .then((user) => user.destroy())
   .then(() => reply({}))
-  .catch((err) => reply.badImplementation(err.message));
+  .catch((err) => reply.badImplementationCustom(err));
 }
 
 function getToken (id) {
