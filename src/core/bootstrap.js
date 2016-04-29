@@ -39,7 +39,11 @@ function start () {
         register: require(path.join(__dirname, file))
       };
     })
-    .then(registerToServer);
+    .then(registerToServer)
+    .catch((err) => {
+      console.log('==> Error load core plugins', err);
+      process.exit();
+    });
   })
   .then(() => {
     // load plugins
@@ -50,7 +54,11 @@ function start () {
           register: require(path.join(__dirname, '..', dir))
         };
       })
-      .then(registerToServer);
+      .then(registerToServer)
+      .catch((err) => {
+        console.log('==> Error load plugins', err);
+        process.exit();
+      });
   })
   .then(() => {
     if (process.env.NODE_ENV === 'test') {
