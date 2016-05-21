@@ -18,8 +18,6 @@ const config = {
   dialect: process.env.DB_DIALECT || 'postgres'
 };
 
-console.log(config);
-
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 let db = {sequelize, Sequelize};
