@@ -583,7 +583,7 @@ describe('Routes /product', () => {
           expect(response).to.have.property('result');
           expect(response.result).to.have.property('product', product.id);
           expect(response.result).to.have.property('order', order.id);
-          expect(response.result).to.have.property('unitPrice', '1.25');
+          expect(response.result).to.have.property('unitPrice');
           expect(response.result).to.have.property('quantity', 1);
           done();
         });
