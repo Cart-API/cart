@@ -53,9 +53,9 @@
     "chai": "3.5.0",
     "chai-datetime": "1.4.1",
     "chai-things": "0.2.0",
-    "coveralls": "^2.11.6",
-    "lab": "~8.0.1",
-    "semistandard": "~7.0.4"
+    "coveralls": "2.11.6",
+    "lab": "8.0.1",
+    "semistandard": "7.0.4"
   },
   "semistandard": {
     "ignore": [
