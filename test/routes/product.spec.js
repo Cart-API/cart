@@ -459,7 +459,7 @@ describe('Routes /product', () => {
         payload: {
           reference: '001',
           description: 'description',
-          unitPrice: 2,
+          unitPrice: '2.50',
           category: category.id
         }
       };
@@ -468,7 +468,7 @@ describe('Routes /product', () => {
         expect(response).to.have.property('result');
         expect(response.result).to.have.property('reference', '001');
         expect(response.result).to.have.property('description', 'description');
-        expect(response.result).to.have.property('unitPrice', 2);
+        expect(response.result).to.have.property('unitPrice', '2.50');
         expect(response.result).to.have.property('category', category.id);
         done();
       });
