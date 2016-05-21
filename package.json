@@ -50,9 +50,9 @@
     "vision": "^4.0.1"
   },
   "devDependencies": {
-    "chai": "~3.4.1",
+    "chai": "^3.5.0",
     "chai-datetime": "^1.4.1",
-    "chai-things": "~0.2.0",
+    "chai-things": "^0.2.0",
     "coveralls": "^2.11.6",
     "lab": "~8.0.1",
     "semistandard": "~7.0.4"
