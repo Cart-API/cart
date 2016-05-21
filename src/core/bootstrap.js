@@ -7,6 +7,8 @@ const path = require('path');
 
 const Server = require('./server');
 
+const dir = __dirname + '/../';
+
 module.exports = {start};
 function start () {
   return Promise.resolve()
@@ -15,13 +17,14 @@ function start () {
     return registerToServer({
       register: require('k7'),
       options: {
-        models: 'src/**/model.js',
+        models: dir + '**/model.js',
         adapter: require('k7-sequelize'),
         connectionOptions: {
           database: process.env.DB_NAME || 'cart',
-          username: process.env.DB_USERNAME || 'cart',
-          password: process.env.DB_PASSWORD || 'cart',
+          username: process.env.DB_USERNAME || 'postgres',
+          password: process.env.DB_PASSWORD || 'postgres',
           options: {
+            host: process.env.DB_HOST || 'localhost',
             port: process.env.DB_PORT || 5432,
             dialect: process.env.DB_DIALECT || 'postgres',
             logging: console.log

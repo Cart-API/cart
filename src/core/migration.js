@@ -13,10 +13,12 @@ const config = {
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || 'postgres',
   database: process.env.DB_NAME || 'cart',
-  host: process.env.DB_HOST || '127.0.0.1',
+  host: process.env.DB_HOST || 'localhost',
   port: process.env.DB_PORT || 5432,
   dialect: process.env.DB_DIALECT || 'postgres'
 };
+
+console.log(config);
 
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
