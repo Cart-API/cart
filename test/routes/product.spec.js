@@ -468,7 +468,7 @@ describe('Routes /product', () => {
         expect(response).to.have.property('result');
         expect(response.result).to.have.property('reference', '001');
         expect(response.result).to.have.property('description', 'description');
-        expect(response.result).to.have.property('unitPrice', 2);
+        expect(response.result).to.have.property('unitPrice', '2.00');
         expect(response.result).to.have.property('category', category.id);
         done();
       });
